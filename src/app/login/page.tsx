@@ -1,4 +1,3 @@
-import SignUpForm from '@/components/Authentication/SignUpForm';
 import { Box, Button, Container, Divider, Link, Paper, Typography } from '@mui/material'
 import React from 'react'
 import { FcGoogle } from "react-icons/fc";
@@ -16,7 +15,7 @@ const page = () => {
             <Typography component={"h1"} variant='h5'
             sx={{fontWeight: 'bold'}}
             >
-              Sign Up
+              Login
             </Typography>
           </Box>
 
@@ -55,8 +54,7 @@ const page = () => {
             <Divider sx={{ flex: 1, borderBottomWidth: 2 }}/>
           </Box>
 
-          {/* call the sign up form */}
-          <SignUpForm />
+          {/* call the login form */}
 
             <Divider sx={{ width: '100%', my: 3, borderBottomWidth: 2  }}/>
 
@@ -66,15 +64,15 @@ const page = () => {
               mb:2
             }}>
               <Typography sx={{ fontSize: '1rem' }}>
-                Already have an account?
+                Don't have an account?
                 <Link
-                  href="/login"
+                  href="/signup"
                   underline="hover"
                   sx={{
                     ml: 0.5,
                   }}
                 >
-                  sign in
+                  sign up
                 </Link>
               </Typography>
             </Box>
