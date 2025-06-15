@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Container, FormControlLabel, Paper, TextField, Typography } from '@mui/material'
+import { Box, Button, Checkbox, Container, Divider, FormControlLabel, Link, Paper, TextField, Typography } from '@mui/material'
 import React from 'react'
 
 const SignUpForm = () => {
@@ -19,7 +19,6 @@ const SignUpForm = () => {
           </Box>
             <Box component="form" sx={{
               mt: 4,
-              mb: 2,
               }}>
 
               <Box sx={{
@@ -68,9 +67,14 @@ const SignUpForm = () => {
                   />
                 </Box>
                 <FormControlLabel
-                  required
                   control={<Checkbox />}
-                  label="I agree to the Terms and Conditions"
+                  label={
+                    <Typography
+                      sx={{ fontSize: '1rem' }}
+                    >
+                      I agree to the terms and conditions
+                    </Typography>
+                  }
                 />
               </Box>
 
@@ -86,6 +90,24 @@ const SignUpForm = () => {
               >
                 Sign Up
               </Button>
+            </Box>
+
+            <Divider sx={{ width: '100%', my: 3, borderBottomWidth: 2  }}/>
+
+            <Box sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              mb:2
+            }}>
+              <Typography sx={{ fontSize: '1rem' }}>
+                Already have an account?
+                <Link
+                  href="/signin"
+                  underline="hover"
+                >
+                  sign in
+                </Link>
+              </Typography>
             </Box>
         </Paper>
     </Container>
