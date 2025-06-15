@@ -1,5 +1,6 @@
 import { Box, Button, Checkbox, Container, Divider, FormControlLabel, Link, Paper, TextField, Typography } from '@mui/material'
 import React from 'react'
+import { FcGoogle } from "react-icons/fc";
 
 const SignUpForm = () => {
   return (
@@ -17,6 +18,44 @@ const SignUpForm = () => {
               Sign Up
             </Typography>
           </Box>
+
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              width: '100%',
+              my: 3
+            }}
+          >
+            <Button
+              variant='outlined'
+              startIcon={<FcGoogle />}
+              color="inherit"
+              sx={{
+                width: '100%',
+                // color: 'black',
+                // borderColor: 'gray',
+              }}
+            >
+              Continue with Google
+            </Button>
+          </Box>
+
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              my: 3,
+            }}
+          >
+            <Divider sx={{ flex: 1, borderBottomWidth: 2 }}/>
+            <Typography sx={{ mx: 2, fontSize: '0.9rem', whiteSpace: 'nowrap', fontWeight: 'bold' }}>
+              OR
+            </Typography>
+            <Divider sx={{ flex: 1, borderBottomWidth: 2 }}/>
+          </Box>
+
             <Box component="form" sx={{
               mt: 4,
               }}>
@@ -104,6 +143,9 @@ const SignUpForm = () => {
                 <Link
                   href="/signin"
                   underline="hover"
+                  sx={{
+                    ml: 0.5,
+                  }}
                 >
                   sign in
                 </Link>
