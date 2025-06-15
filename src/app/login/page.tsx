@@ -1,3 +1,4 @@
+import LoginForm from '@/components/Authentication/LoginForm';
 import { Box, Button, Container, Divider, Link, Paper, Typography } from '@mui/material'
 import React from 'react'
 import { FcGoogle } from "react-icons/fc";
@@ -15,7 +16,7 @@ const page = () => {
             <Typography component={"h1"} variant='h5'
             sx={{fontWeight: 'bold'}}
             >
-              Login
+              Welcome back
             </Typography>
           </Box>
 
@@ -55,6 +56,7 @@ const page = () => {
           </Box>
 
           {/* call the login form */}
+          <LoginForm/>
 
             <Divider sx={{ width: '100%', my: 3, borderBottomWidth: 2  }}/>
 
