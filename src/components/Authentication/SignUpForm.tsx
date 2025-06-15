@@ -65,19 +65,10 @@ const validate = (values : FormValues) => {
   return errors;
 }
 
-const onSubmit = async(values : FormValues) => {
+const onSubmit = async (values : FormValues) => {
 
-  try {
-    // const user =await signupWithEmailPassword(values.email, values.password);
-    // if (user) {
-    //   console.log("User signed up successfully:", user);
-    // } else {
-    //   console.error("Failed to sign up user");
-    // }
-    console.log("Form submitted successfully with values:", values);
-  } catch (error) {
-    console.error("Error during form submission:", error);
-  }
+  await signupWithEmailPassword(values);
+
 }
 
 const SignUpForm = () => {
