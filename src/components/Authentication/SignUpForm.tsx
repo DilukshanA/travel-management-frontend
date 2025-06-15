@@ -2,6 +2,7 @@
 import { Box, Button, Checkbox, FormControlLabel, TextField, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import React from 'react'
+import signupWithEmailPassword from '../../../lib/authentication/signupWithEmailPassword'
 
 type FormValues = {
   firstName: string;
@@ -21,9 +22,62 @@ const initialValues : FormValues = {
   agreedToTerms: false
 }
 
-const onSubmit = (values : FormValues) => {
-  console.log('Form values:', values);
-  // Here you can handle the form submission, e.g., send data to your backend
+type FormErrors = {
+  firstName?: string,
+  lastName?: string,
+  email?: string,
+  password?: string,
+  confirmPassword?: string,
+  agreedToTerms?: string
+}
+
+const validate = (values : FormValues) => {
+  const errors : FormErrors = {};
+
+  if (!values.firstName) {
+    errors.firstName = 'First Name is required';
+  }
+
+  if (!values.lastName) {
+    errors.lastName = 'Last Name is required';
+  }
+
+  if (!values.email) {
+    errors.email = 'Email is required';
+  } else if (!/\S+@\S+\.\S+/.test(values.email)) {
+    errors.email = 'Email address is invalid';
+  }
+
+  if (!values.password) {
+    errors.password = 'Password is required';
+  } else if (values.password.length < 6) {
+    errors.password = 'Password must be at least 6 characters';
+  }
+
+  if (values.password !== values.confirmPassword) {
+    errors.confirmPassword = 'Passwords do not match';
+  }
+
+  if (!values.agreedToTerms) {
+    errors.agreedToTerms = 'You must agree to the terms and conditions';
+  }
+
+  return errors;
+}
+
+const onSubmit = async(values : FormValues) => {
+
+  try {
+    // const user =await signupWithEmailPassword(values.email, values.password);
+    // if (user) {
+    //   console.log("User signed up successfully:", user);
+    // } else {
+    //   console.error("Failed to sign up user");
+    // }
+    console.log("Form submitted successfully with values:", values);
+  } catch (error) {
+    console.error("Error during form submission:", error);
+  }
 }
 
 const SignUpForm = () => {
@@ -32,8 +86,10 @@ const SignUpForm = () => {
   const formik = useFormik({
   initialValues: initialValues,
   onSubmit: onSubmit,
+  validate: validate,
 });
 
+//console.log('Formik validation errors: ', formik.errors)
   return (
     <Box component="form" sx={{
       mt: 4,
@@ -55,6 +111,9 @@ const SignUpForm = () => {
                 name='firstName' size='small'
                 onChange={formik.handleChange}
                 value={formik.values.firstName}
+                onBlur={formik.handleBlur}
+                error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+                helperText={formik.touched.firstName &&formik.errors.firstName}
             />
           </Box>
           <Box>
@@ -62,6 +121,9 @@ const SignUpForm = () => {
                 name='lastName' size='small'
                 onChange={formik.handleChange}
                 value={formik.values.lastName}
+                onBlur={formik.handleBlur}
+                error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+                helperText={formik.touched.lastName && formik.errors.lastName}
             />
           </Box>
         </Box>
@@ -74,6 +136,9 @@ const SignUpForm = () => {
               }}
               onChange={formik.handleChange}
               value={formik.values.email}
+              onBlur={formik.handleBlur}
+              error={formik.touched.email && Boolean(formik.errors.email)}
+              helperText={formik.touched.email && formik.errors.email}
           />
         </Box>
         <Box>
@@ -84,6 +149,9 @@ const SignUpForm = () => {
               }}
               onChange={formik.handleChange}
               value={formik.values.password}
+              onBlur={formik.handleBlur}
+              error={formik.touched.password && Boolean(formik.errors.password)}
+              helperText={formik.touched.password && formik.errors.password}
           />
         </Box>
         <Box>
@@ -94,6 +162,9 @@ const SignUpForm = () => {
               }}
               onChange={formik.handleChange}
               value={formik.values.confirmPassword}
+              onBlur={formik.handleBlur}
+              error={formik.touched.confirmPassword && Boolean(formik.errors.confirmPassword)}
+              helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
           />
         </Box>
         <FormControlLabel
@@ -103,6 +174,7 @@ const SignUpForm = () => {
             checked={formik.values.agreedToTerms}
             color='primary'
             onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
           />}
           label={
             <Typography
@@ -112,6 +184,11 @@ const SignUpForm = () => {
             </Typography>
           }
         />
+        {formik.touched.agreedToTerms && formik.errors.agreedToTerms && (
+          <Typography variant="caption" color="error" sx={{ ml: 1 }}>
+            {formik.errors.agreedToTerms}
+          </Typography>
+      )}
       </Box>
 
       <Button
