@@ -1,3 +1,4 @@
+"use client"
 import SignUpForm from '@/components/Authentication/SignUpForm';
 import { Box, Button, Container, Divider, Link, Paper, Typography } from '@mui/material'
 import React from 'react'
