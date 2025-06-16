@@ -26,7 +26,7 @@ const signupWithEmailPassword = async (values : FormValues) => {
 
         //console.log("ID Token:", idToken);
 
-        await axios.post('http://localhost:4000/api/auth/signup',{
+        const response =await axios.post('http://localhost:4000/api/auth/signup',{
             uid: userCredential.user.uid,
             email: userCredential.user.email,
             firstName: values.firstName,
@@ -38,15 +38,32 @@ const signupWithEmailPassword = async (values : FormValues) => {
                 'Content-Type': 'application/json'
             }
         })
-        
+        // Display: User registered successfully!
+        toast.success(response.data.message);
     } 
     catch (error) {
-        const authError = error as AuthError;
-        const errorMessage = getErrorMessage(authError.code);
-        toast.error(errorMessage, {
+
+        if ((error as AuthError).code) {
+            //firebase error handling
+            const authError = error as AuthError;
+            const errorMessage = getErrorMessage(authError.code);
+            toast.error(errorMessage, {
             duration: 3000,
             position: 'top-right',
         })
+        } else if (axios.isAxiosError(error)){
+            //axios error handling
+            toast.error(error.response?.data?.message || "Signup failed", { 
+                duration: 3000,
+                position: 'top-right'
+            });
+        } else {
+            // other errors
+            toast.error("An unexpected error occurred", { 
+                duration: 3000,
+                position: 'top-right'
+            });
+        }
     }
 }
 
