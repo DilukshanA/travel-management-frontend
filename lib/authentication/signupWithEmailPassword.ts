@@ -1,7 +1,9 @@
 "use client"
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { AuthError, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebaseConfig";
 import axios from "axios";
+import { getErrorMessage } from "./authExceptions";
+import toast from "react-hot-toast";
 
 type FormValues = {
   firstName: string;
@@ -22,7 +24,7 @@ const signupWithEmailPassword = async (values : FormValues) => {
 
         const idToken = await userCredential.user.getIdToken();
 
-        console.log("ID Token:", idToken);
+        //console.log("ID Token:", idToken);
 
         await axios.post('http://localhost:4000/api/auth/signup',{
             uid: userCredential.user.uid,
@@ -36,20 +38,15 @@ const signupWithEmailPassword = async (values : FormValues) => {
                 'Content-Type': 'application/json'
             }
         })
-
-        // console.log("User credentials:", userCredential);
-
-        // const firebaseUser = userCredential.user;
-
-        // console.log("Firebase user created:", firebaseUser)
-
-        // console.log("User signed up successfully:", {
-        //     uid: firebaseUser.uid,
-        //     email: firebaseUser.email,
-        // });
         
-    } catch (error) {
-        console.error("Error signing up with email and password:", error);
+    } 
+    catch (error) {
+        const authError = error as AuthError;
+        const errorMessage = getErrorMessage(authError.code);
+        toast.error(errorMessage, {
+            duration: 3000,
+            position: 'top-right',
+        })
     }
 }
 
