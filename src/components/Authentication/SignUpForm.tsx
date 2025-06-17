@@ -3,6 +3,8 @@ import { Box, Button, Checkbox, FormControlLabel, TextField, Typography } from '
 import { useFormik } from 'formik'
 import React from 'react'
 import signupWithEmailPassword from '../../../lib/authentication/signupWithEmailPassword'
+import axios from 'axios'
+import toast from 'react-hot-toast'
 
 type FormValues = {
   firstName: string;
@@ -67,7 +69,22 @@ const validate = (values : FormValues) => {
 
 const onSubmit = async (values : FormValues) => {
 
-  await signupWithEmailPassword(values);
+  // await signupWithEmailPassword(values);
+  try {
+    const response = await axios.post('http://localhost:4000/api/sendMail/signup-otp', {
+    email: values.email,
+    name: values.firstName + ' ' + values.lastName,
+  })
+
+  toast.success(response.data.message, {
+    duration: 3000,
+  });
+  } catch (error) {
+    toast.error('Failed to send OTP. Please try again.', {
+      duration: 3000,
+    });
+  }
+
 
 }
 
