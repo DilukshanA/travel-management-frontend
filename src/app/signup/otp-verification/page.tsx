@@ -1,11 +1,20 @@
 "use client";
 import { OTP } from '@/components/ui/OTP'
 import { Box, Button } from '@mui/material';
+import axios from 'axios';
 import React, { useState } from 'react'
 
 const page = () => {
 
     const [otp, setOtp] = useState('');
+
+    const handleSubmit = async () => {
+
+        const response = await axios.post('http://localhost:4000/api/auth/signup-otp-verify', {
+          email: localStorage.getItem('email'),
+          otp: otp
+        })
+    }
 
   return (
     <Box className='h-screen flex items-center justify-center'>
@@ -18,9 +27,7 @@ const page = () => {
           variant='contained'
           color='primary'
           sx={{ mt: 2 }}
-          onClick={() => {
-            console.log("OTP Submitted:", otp);
-          }}
+          onClick={handleSubmit}
         >
           Submit
         </Button>
