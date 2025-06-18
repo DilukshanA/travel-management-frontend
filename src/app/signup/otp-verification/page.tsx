@@ -1,6 +1,6 @@
 "use client";
 import { OTP } from '@/components/ui/OTP'
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import React, { useState } from 'react'
 
 const page = () => {
@@ -8,11 +8,23 @@ const page = () => {
     const [otp, setOtp] = useState('');
 
   return (
-    <Box>
+    <Box className='h-screen flex items-center justify-center'>
+      <Box className='px-16 py-8 rounded-2xl flex flex-col items-center
+      justify-center bg-white'>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-        <OTP separator={<span>-</span>} value={otp} onChange={setOtp} length={6} />
-        <span>Entered value: {otp}</span>
+          <OTP separator={<span>-</span>} value={otp} onChange={setOtp} length={6} />
         </Box>
+        <Button
+          variant='contained'
+          color='primary'
+          sx={{ mt: 2 }}
+          onClick={() => {
+            console.log("OTP Submitted:", otp);
+          }}
+        >
+          Submit
+        </Button>
+      </Box>
     </Box>
   )
 }
