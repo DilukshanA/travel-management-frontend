@@ -26,7 +26,7 @@ const signupWithEmailPassword = async (values : FormValues) => {
 
         //console.log("ID Token:", idToken);
 
-        const response =await axios.post('http://localhost:4000/api/auth/signup',{
+        const response = await axios.post('http://localhost:4000/api/auth/signup',{
             uid: userCredential.user.uid,
             email: userCredential.user.email,
             firstName: values.firstName,

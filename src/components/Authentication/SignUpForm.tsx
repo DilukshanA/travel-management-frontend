@@ -69,22 +69,7 @@ const validate = (values : FormValues) => {
 
 const onSubmit = async (values : FormValues) => {
 
-  // await signupWithEmailPassword(values);
-  try {
-    const response = await axios.post('http://localhost:4000/api/sendMail/signup-otp', {
-    email: values.email,
-    name: values.firstName + ' ' + values.lastName,
-  })
-
-  toast.success(response.data.message, {
-    duration: 3000,
-  });
-  } catch (error) {
-    toast.error('Failed to send OTP. Please try again.', {
-      duration: 3000,
-    });
-  }
-
+  await signupWithEmailPassword(values);
 
 }
 
