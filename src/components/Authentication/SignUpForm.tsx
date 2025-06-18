@@ -2,11 +2,12 @@
 import { Box, Button, Checkbox, FormControlLabel, TextField, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import React from 'react'
-import signupWithEmailPassword from '../../../lib/authentication/signupWithEmailPassword'
+//import signupWithEmailPassword from '../../../lib/authentication/signupWithEmailPassword'
 import axios from 'axios'
 import toast from 'react-hot-toast'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../../../lib/firebaseConfig'
+import { useRouter } from 'next/navigation';
 
 type FormValues = {
   firstName: string;
@@ -69,6 +70,11 @@ const validate = (values : FormValues) => {
   return errors;
 }
 
+
+const SignUpForm = () => {
+
+  const router = useRouter();
+
 const onSubmit = async (values : FormValues) => {
 
   //await signupWithEmailPassword(values);
@@ -99,6 +105,12 @@ const onSubmit = async (values : FormValues) => {
       console.log('User logged in:', userCredential.user);
       toast.success('User registered successfully!');
 
+
+      // Store the user data in local storage
+      localStorage.setItem('email', values.email);
+
+      // Redirect to the OTP verification page
+      router.push('/signup/otp-verification');
     }
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -122,9 +134,6 @@ const onSubmit = async (values : FormValues) => {
     }
   }
 }
-
-const SignUpForm = () => {
-
 
   const formik = useFormik({
   initialValues: initialValues,
