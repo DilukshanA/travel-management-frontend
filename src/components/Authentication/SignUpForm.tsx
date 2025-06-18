@@ -5,6 +5,8 @@ import React from 'react'
 import signupWithEmailPassword from '../../../lib/authentication/signupWithEmailPassword'
 import axios from 'axios'
 import toast from 'react-hot-toast'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../../../lib/firebaseConfig'
 
 type FormValues = {
   firstName: string;
@@ -69,8 +71,56 @@ const validate = (values : FormValues) => {
 
 const onSubmit = async (values : FormValues) => {
 
-  await signupWithEmailPassword(values);
+  //await signupWithEmailPassword(values);
 
+  try {
+    // call backend signup API
+    const response = await axios.post('http://localhost:4000/api/auth/signup',{
+      firstName: values.firstName,
+      lastName: values.lastName,
+      email: values.email,
+      password: values.password,
+      role: 'user'
+    })
+  
+    if (response.status !== 200) {
+
+      // If the response status is not 200, throw an error
+      toast.error('Failed to sign up', {
+        duration: 3000,
+        position: 'top-right'
+      });
+      throw new Error('Failed to sign up');
+
+    } else if (response.status === 200) {
+
+      // If signup API succeeds, log the user in via Firebase Client SDK
+      const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
+      console.log('User logged in:', userCredential.user);
+      toast.success('User registered successfully!');
+
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      // Handle Axios error
+      toast.error(error.response?.data?.message || 'Signup failed', {
+        duration: 3000,
+        position: 'top-right'
+      });
+    } else if (error instanceof Error) {
+      // Handle other errors
+      toast.error(error.message, {
+        duration: 3000,
+        position: 'top-right'
+      });
+    } else {
+      // Handle unexpected errors
+      toast.error('An unexpected error occurred', {
+        duration: 3000,
+        position: 'top-right'
+      });
+    }
+  }
 }
 
 const SignUpForm = () => {
