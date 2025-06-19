@@ -3,8 +3,14 @@ import SignUpForm from '@/components/Authentication/SignUpForm';
 import { Box, Button, Container, Divider, Link, Paper, Typography } from '@mui/material'
 import React from 'react'
 import { FcGoogle } from "react-icons/fc";
+import signupWithGoogle from '../../../lib/authentication/signupWithGoogle';
 
 const page = () => {
+
+  const handleGoogleSignUp = async () => {
+    await signupWithGoogle();
+  }
+
   return (
     <Container maxWidth="xs">
         <Paper elevation={10} sx={{ my:8, padding: 2}}>
@@ -37,6 +43,7 @@ const page = () => {
               sx={{
                 width: '100%',
               }}
+              onClick={handleGoogleSignUp}
             >
               Continue with Google
             </Button>
