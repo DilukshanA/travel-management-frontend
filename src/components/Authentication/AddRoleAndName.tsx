@@ -1,9 +1,9 @@
 "Use client";
-import { Box, Button, FormControl, InputLabel, TextField } from '@mui/material'
+import { Box, Button, TextField } from '@mui/material'
 import React from 'react'
-import MenuItem from '@mui/material/MenuItem';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { SelectChangeEvent } from '@mui/material/Select';
 import BasicSelectField from '../ui/BasicSelectField';
+import { useFormik } from 'formik';
 
 const AddRoleAndName = () => {
 
@@ -15,9 +15,51 @@ const AddRoleAndName = () => {
     console.log(event.target.value);
   };
 
-  console.log(role);
+  type FormValueTyoes = {
+    firstName: string;
+    lastName: string;
+    role: string;
+  }
+
+  type FormErrorTyoes = {
+    firstName?: string;
+    lastName?: string;
+    role?: string;
+  }
+
+  const initialValues: FormValueTyoes = {
+    firstName: '',
+    lastName: '',
+    role: ''
+  }
+
+  const onSubmit = () => {
+
+  }
+
+  const validate = (values : FormValueTyoes) => {
+    const errors: FormErrorTyoes = {};
+
+    if (!values.role) {
+      errors.role = 'Role is required';
+    }
+
+    if (!values.firstName) {
+      errors.firstName = 'First Name is required';
+    }
+
+    return errors;
+  }
+
+  console.log(role ? role : 'No role selected');
+
+  const formik = useFormik({
+    initialValues,
+    onSubmit,
+    validate
+  })
   return (
-    <Box>
+    <Box component={"form"} onSubmit={formik.handleSubmit}>
       
       <Box sx={{
         display: 'flex',
@@ -47,6 +89,8 @@ const AddRoleAndName = () => {
           onChange={(value : string) => setRole(value)}
         />
       </Box>
+
+      {/* Submit Button */}
       <Box
         sx={{
         gap: 2,
