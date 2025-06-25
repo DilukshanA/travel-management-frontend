@@ -4,6 +4,7 @@ import "./globals.css";
 import ThemeRegistry from "@/components/ThemeRegistry";
 import { Toaster } from 'react-hot-toast';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
+import ReduxProvider from "../../lib/Provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,12 +31,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
-          <ThemeRegistry>
-            <Toaster position="top-right" />
-            {children}
-          </ThemeRegistry>
-        </AppRouterCacheProvider>
+        <ReduxProvider>
+          <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+            <ThemeRegistry>
+              <Toaster position="top-right" />
+              {children}
+            </ThemeRegistry>
+          </AppRouterCacheProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

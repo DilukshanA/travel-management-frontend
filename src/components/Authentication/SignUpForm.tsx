@@ -8,6 +8,7 @@ import toast from 'react-hot-toast'
 import { signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../../../lib/firebaseConfig'
 import { useRouter } from 'next/navigation';
+import { useSignUpWithEmailPasswordMutation } from '@/redux/reducers/authApiSlice'
 
 type FormValues = {
   firstName: string;
@@ -75,65 +76,96 @@ const SignUpForm = () => {
 
   const router = useRouter();
 
-const onSubmit = async (values : FormValues) => {
+  // use useSignUpWithEmailPasswordMutation for signup
+  const [ signUp, { isLoading, isSuccess, isError, status, error } ] = useSignUpWithEmailPasswordMutation();
 
-  //await signupWithEmailPassword(values);
-
-  try {
-    // call backend signup API
-    const response = await axios.post('http://localhost:4000/api/auth/signup',{
-      firstName: values.firstName,
-      lastName: values.lastName,
-      email: values.email,
-      password: values.password,
-      role: 'user'
-    })
-  
-    if (response.status !== 200) {
-
-      // If the response status is not 200, throw an error
-      toast.error('Failed to sign up', {
-        duration: 3000,
-        position: 'top-right'
-      });
-      throw new Error('Failed to sign up');
-
-    } else if (response.status === 200) {
-
-      // If signup API succeeds, log the user in via Firebase Client SDK
-      const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
-      console.log('User logged in:', userCredential.user);
+  const onSubmit = async () => {
+    try {
+      const result = await signUp({
+        firstName: formik.values.firstName,
+        lastName: formik.values.lastName,
+        email: formik.values.email,
+        password: formik.values.password,
+        role: 'user'
+      }).unwrap();
       toast.success('User registered successfully!');
-
-
-      // Store the user data in local storage
-      localStorage.setItem('email', values.email);
-
-      // Redirect to the OTP verification page
-      router.push('/signup/otp-verification');
-    }
-  } catch (error) {
-    if (axios.isAxiosError(error)) {
-      // Handle Axios error
-      toast.error(error.response?.data?.message || 'Signup failed', {
-        duration: 3000,
-        position: 'top-right'
-      });
-    } else if (error instanceof Error) {
-      // Handle other errors
-      toast.error(error.message, {
-        duration: 3000,
-        position: 'top-right'
-      });
-    } else {
-      // Handle unexpected errors
-      toast.error('An unexpected error occurred', {
+      console.log('SignUp Result:', result);  
+    } catch (error : any) {
+      console.log('Error during signup:', error);
+      toast.error(`Signup failed: ${error.data.error || 'An unexpected error occurred'}`, {
         duration: 3000,
         position: 'top-right'
       });
     }
   }
-}
+
+        console.log('isLoading:', isLoading);
+      console.log('isSuccess:', isSuccess);
+      console.log('isError:', isError);
+      console.log('status:', status);
+      console.log('error:', error);
+      
+
+// const onSubmit = async (values : FormValues) => {
+
+
+//   //await signupWithEmailPassword(values);
+
+//   try {
+//     // call backend signup API
+//     const response = await axios.post('http://localhost:4000/api/auth/signup',{
+//       firstName: values.firstName,
+//       lastName: values.lastName,
+//       email: values.email,
+//       password: values.password,
+//       role: 'user'
+//     })
+  
+//     if (response.status !== 200) {
+
+//       // If the response status is not 200, throw an error
+//       toast.error('Failed to sign up', {
+//         duration: 3000,
+//         position: 'top-right'
+//       });
+//       throw new Error('Failed to sign up');
+
+//     } else if (response.status === 200) {
+
+//       // If signup API succeeds, log the user in via Firebase Client SDK
+//       const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
+//       console.log('User logged in:', userCredential.user);
+//       toast.success('User registered successfully!');
+
+
+//       // Store the user data in local storage
+//       localStorage.setItem('email', values.email);
+
+//       // Redirect to the OTP verification page
+//       router.push('/signup/otp-verification');
+//     }
+//   } catch (error) {
+//     if (axios.isAxiosError(error)) {
+//       // Handle Axios error
+//       toast.error(error.response?.data?.message || 'Signup failed', {
+//         duration: 3000,
+//         position: 'top-right'
+//       });
+//     } else if (error instanceof Error) {
+//       // Handle other errors
+//       toast.error(error.message, {
+//         duration: 3000,
+//         position: 'top-right'
+//       });
+//     } else {
+//       // Handle unexpected errors
+//       toast.error('An unexpected error occurred', {
+//         duration: 3000,
+//         position: 'top-right'
+//       });
+//     }
+//   }
+// }
 
   const formik = useFormik({
   initialValues: initialValues,
