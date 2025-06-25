@@ -2,74 +2,11 @@
 import { Box, Button, Checkbox, FormControlLabel, TextField, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import React from 'react'
-//import signupWithEmailPassword from '../../../lib/authentication/signupWithEmailPassword'
-import axios from 'axios'
 import toast from 'react-hot-toast'
-import { signInWithEmailAndPassword } from 'firebase/auth'
-import { auth } from '../../../lib/firebaseConfig'
 import { useRouter } from 'next/navigation';
 import { useSignUpWithEmailPasswordMutation } from '@/redux/reducers/authApiSlice'
-
-type FormValues = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-  agreedToTerms: boolean;
-}
-
-const initialValues : FormValues = {
-  firstName: '',
-  lastName: '',
-  email: '',
-  password: '',
-  confirmPassword: '',
-  agreedToTerms: false
-}
-
-type FormErrors = {
-  firstName?: string,
-  lastName?: string,
-  email?: string,
-  password?: string,
-  confirmPassword?: string,
-  agreedToTerms?: string
-}
-
-const validate = (values : FormValues) => {
-  const errors : FormErrors = {};
-
-  if (!values.firstName) {
-    errors.firstName = 'First Name is required';
-  }
-
-  if (!values.lastName) {
-    errors.lastName = 'Last Name is required';
-  }
-
-  if (!values.email) {
-    errors.email = 'Email is required';
-  } else if (!/\S+@\S+\.\S+/.test(values.email)) {
-    errors.email = 'Email address is invalid';
-  }
-
-  if (!values.password) {
-    errors.password = 'Password is required';
-  } else if (values.password.length < 6) {
-    errors.password = 'Password must be at least 6 characters';
-  }
-
-  if (values.password !== values.confirmPassword) {
-    errors.confirmPassword = 'Passwords do not match';
-  }
-
-  if (!values.agreedToTerms) {
-    errors.agreedToTerms = 'You must agree to the terms and conditions';
-  }
-
-  return errors;
-}
+import { signUpValidate } from '@/forms/signup/validation'
+import { signUpInitialValues } from '@/forms/signup/initialValues'
 
 
 const SignUpForm = () => {
@@ -103,74 +40,12 @@ const SignUpForm = () => {
       console.log('isSuccess:', isSuccess);
       console.log('isError:', isError);
       console.log('status:', status);
-      console.log('error:', error);
-      
-
-// const onSubmit = async (values : FormValues) => {
-
-
-//   //await signupWithEmailPassword(values);
-
-//   try {
-//     // call backend signup API
-//     const response = await axios.post('http://localhost:4000/api/auth/signup',{
-//       firstName: values.firstName,
-//       lastName: values.lastName,
-//       email: values.email,
-//       password: values.password,
-//       role: 'user'
-//     })
-  
-//     if (response.status !== 200) {
-
-//       // If the response status is not 200, throw an error
-//       toast.error('Failed to sign up', {
-//         duration: 3000,
-//         position: 'top-right'
-//       });
-//       throw new Error('Failed to sign up');
-
-//     } else if (response.status === 200) {
-
-//       // If signup API succeeds, log the user in via Firebase Client SDK
-//       const userCredential = await signInWithEmailAndPassword(auth, values.email, values.password);
-//       console.log('User logged in:', userCredential.user);
-//       toast.success('User registered successfully!');
-
-
-//       // Store the user data in local storage
-//       localStorage.setItem('email', values.email);
-
-//       // Redirect to the OTP verification page
-//       router.push('/signup/otp-verification');
-//     }
-//   } catch (error) {
-//     if (axios.isAxiosError(error)) {
-//       // Handle Axios error
-//       toast.error(error.response?.data?.message || 'Signup failed', {
-//         duration: 3000,
-//         position: 'top-right'
-//       });
-//     } else if (error instanceof Error) {
-//       // Handle other errors
-//       toast.error(error.message, {
-//         duration: 3000,
-//         position: 'top-right'
-//       });
-//     } else {
-//       // Handle unexpected errors
-//       toast.error('An unexpected error occurred', {
-//         duration: 3000,
-//         position: 'top-right'
-//       });
-//     }
-//   }
-// }
+      console.log('error:', error);     
 
   const formik = useFormik({
-  initialValues: initialValues,
+  initialValues: signUpInitialValues,
   onSubmit: onSubmit,
-  validate: validate,
+  validate: signUpValidate,
 });
 
 //console.log('Formik validation errors: ', formik.errors)
