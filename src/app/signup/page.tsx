@@ -4,12 +4,14 @@ import { Box, Button, Container, Divider, Link, Paper, Typography } from '@mui/m
 import React from 'react'
 import { FcGoogle } from "react-icons/fc";
 import { useSignUpwithGoogleMutation } from '@/redux/reducers/authApiSlice';
-import { signInWithPopup } from 'firebase/auth';
+import { AuthError, signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from '../../../lib/firebaseConfig';
+import toast from 'react-hot-toast';
+import { getErrorMessage } from '../../../lib/authentication/authExceptions';
 
 const page = () => {
 
-  const [ signUp ] = useSignUpwithGoogleMutation();
+  const [ signUp, { isLoading, isSuccess, isError, error } ] = useSignUpwithGoogleMutation();
 
   const handleGoogleSignUp = async () => {
     try {
@@ -23,10 +25,33 @@ const page = () => {
 
       const result = await signUp(idToken).unwrap();
       console.log('SignUp Result:', result);
-    } catch (error) {
-      
+      toast.success(result.message || 'User signed up with successfully!')
+
+    } catch (err: any) {
+      // when server is not running or connection refused
+      if (err?.originalStatus === 404) {
+        toast.error("Server problem occurred !")
+        console.log('Error bng -- ', err.originalStatus)
+      } 
+      // Internal Server Error
+      else if (err?.originalStatus === 500) {
+        toast.error("Internal server error !")
+      } 
+      // firebase auth error handling
+      else if (err as AuthError) {
+        const authError = err as AuthError;
+        const errorMessage = getErrorMessage(authError.code);
+        toast.error(`error : ${errorMessage}`)
+      }
     }
   }
+
+  // console.log('isLoading:', isLoading);
+  // console.log('isSuccess:', isSuccess);
+  // console.log('isError:', isError);
+  // console.log('error:', error);
+//   console.log('error status code: ' , (isError && error && 'originalStatus' in error) ? error.originalStatus
+//  : 'lol' )
 
   return (
     <Container maxWidth="xs">
