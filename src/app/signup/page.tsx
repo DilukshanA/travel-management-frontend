@@ -33,7 +33,12 @@ const page = () => {
       toast.success(result.message || 'User signed up with successfully!')
 
       // navigate to add role and name page
-      router.push('/signup/add-your-role')
+      // router.push('/signup/add-your-role')
+
+      setTimeout(() => {
+        // Redirect to add your role and name page after 1 seconds
+        router.push('/signup/add-your-role');
+      }, 1000);
 
     } catch (err: any) {
       // when server is not running or connection refused
