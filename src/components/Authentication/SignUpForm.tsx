@@ -8,6 +8,7 @@ import { useSignUpWithEmailPasswordMutation } from '@/redux/reducers/authApiSlic
 import { signUpValidate } from '@/forms/signup/validation'
 import { signUpInitialValues } from '@/forms/signup/initialValues'
 import toast from 'react-hot-toast';
+import LoadingBackdrop from '../ui/LoadingBackdrop';
 
 
 const SignUpForm = () => {
@@ -53,7 +54,7 @@ const SignUpForm = () => {
       }}
       onSubmit={formik.handleSubmit}
     >
-
+      <LoadingBackdrop open={isLoading} />
       <Box sx={{
         display: 'flex',
         flexDirection: 'column',
