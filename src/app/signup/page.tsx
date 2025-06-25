@@ -3,12 +3,29 @@ import SignUpForm from '@/components/Authentication/SignUpForm';
 import { Box, Button, Container, Divider, Link, Paper, Typography } from '@mui/material'
 import React from 'react'
 import { FcGoogle } from "react-icons/fc";
-import signupWithGoogle from '../../../lib/authentication/signupWithGoogle';
+import { useSignUpwithGoogleMutation } from '@/redux/reducers/authApiSlice';
+import { signInWithPopup } from 'firebase/auth';
+import { auth, googleProvider } from '../../../lib/firebaseConfig';
 
 const page = () => {
 
+  const [ signUp ] = useSignUpwithGoogleMutation();
+
   const handleGoogleSignUp = async () => {
-    await signupWithGoogle();
+    try {
+      // sign up with google popup firebase auth
+      const userCredential = await signInWithPopup(auth, googleProvider)
+      console.log('User signed up with Google:', userCredential.user);
+
+      // get ID token
+      const idToken = await userCredential.user.getIdToken();
+      console.log("ID Token : ", idToken);
+
+      const result = await signUp(idToken).unwrap();
+      console.log('SignUp Result:', result);
+    } catch (error) {
+      
+    }
   }
 
   return (
