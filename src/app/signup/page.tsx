@@ -8,8 +8,12 @@ import { AuthError, signInWithPopup } from 'firebase/auth';
 import { auth, googleProvider } from '../../../lib/firebaseConfig';
 import toast from 'react-hot-toast';
 import { getErrorMessage } from '../../../lib/authentication/authExceptions';
+import LoadingBackdrop from '@/components/ui/LoadingBackdrop';
+import { useRouter } from 'next/navigation';
 
 const page = () => {
+
+  const router = useRouter();
 
   const [ signUp, { isLoading, isSuccess, isError, error } ] = useSignUpwithGoogleMutation();
 
@@ -25,7 +29,11 @@ const page = () => {
 
       const result = await signUp(idToken).unwrap();
       console.log('SignUp Result:', result);
+      // Display: User registered successfully! from backend
       toast.success(result.message || 'User signed up with successfully!')
+
+      // navigate to add role and name page
+      router.push('/signup/add-your-role')
 
     } catch (err: any) {
       // when server is not running or connection refused
@@ -46,15 +54,10 @@ const page = () => {
     }
   }
 
-  // console.log('isLoading:', isLoading);
-  // console.log('isSuccess:', isSuccess);
-  // console.log('isError:', isError);
-  // console.log('error:', error);
-//   console.log('error status code: ' , (isError && error && 'originalStatus' in error) ? error.originalStatus
-//  : 'lol' )
-
   return (
     <Container maxWidth="xs">
+      {/* Loading backdrop */}
+      <LoadingBackdrop open={isSuccess || isLoading} />
         <Paper elevation={10} sx={{ my:8, padding: 2}}>
           <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, mt:2}}>
             <Box 
