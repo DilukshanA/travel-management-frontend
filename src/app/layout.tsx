@@ -34,7 +34,11 @@ export default function RootLayout({
         <ReduxProvider>
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>
             <ThemeRegistry>
-              <Toaster position="top-right" />
+              <Toaster position="top-right"
+                toastOptions={{
+                  duration: 3000
+                }}
+              />
               {children}
             </ThemeRegistry>
           </AppRouterCacheProvider>

@@ -2,11 +2,12 @@
 import { Box, Button, Checkbox, FormControlLabel, TextField, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import React from 'react'
-import toast from 'react-hot-toast'
+// import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation';
 import { useSignUpWithEmailPasswordMutation } from '@/redux/reducers/authApiSlice'
 import { signUpValidate } from '@/forms/signup/validation'
 import { signUpInitialValues } from '@/forms/signup/initialValues'
+import toast from 'react-hot-toast';
 
 
 const SignUpForm = () => {
@@ -29,10 +30,7 @@ const SignUpForm = () => {
       console.log('SignUp Result:', result);  
     } catch (error : any) {
       console.log('Error during signup:', error);
-      toast.error(`Signup failed: ${error.data.error || 'An unexpected error occurred'}`, {
-        duration: 3000,
-        position: 'top-right'
-      });
+      toast.error(`Signup failed: ${error.data.error || 'An unexpected error occurred'}`)
     }
   }
 
