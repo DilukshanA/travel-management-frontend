@@ -2,7 +2,6 @@
 import { Box, Button, Checkbox, FormControlLabel, TextField, Typography } from '@mui/material'
 import { useFormik } from 'formik'
 import React from 'react'
-// import toast from 'react-hot-toast'
 import { useRouter } from 'next/navigation';
 import { useSignUpWithEmailPasswordMutation } from '@/redux/reducers/authApiSlice'
 import { signUpValidate } from '@/forms/signup/validation'
@@ -35,11 +34,11 @@ const SignUpForm = () => {
     }
   }
 
-        console.log('isLoading:', isLoading);
-      console.log('isSuccess:', isSuccess);
-      console.log('isError:', isError);
-      console.log('status:', status);
-      console.log('error:', error);     
+      //   console.log('isLoading:', isLoading);
+      // console.log('isSuccess:', isSuccess);
+      // console.log('isError:', isError);
+      // console.log('status:', status);
+      // console.log('error:', error);     
 
   const formik = useFormik({
   initialValues: signUpInitialValues,
