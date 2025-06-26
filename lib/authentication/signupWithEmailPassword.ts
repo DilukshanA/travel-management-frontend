@@ -1,3 +1,4 @@
+// this file is not used
 "use client"
 import { AuthError, createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebaseConfig";

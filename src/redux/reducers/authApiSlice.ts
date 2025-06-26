@@ -5,13 +5,15 @@ export const authApiSlice = createApi({
     baseQuery: fetchBaseQuery({
         baseUrl: "http://localhost:4000",
     }),
+    tagTypes: ["Auth"],
     endpoints: (builder) => ({
         signUpWithEmailPassword: builder.mutation({
             query: (userData) => ({
                 url: "/api/auth/signup",
                 method: "POST",
                 body: userData
-            })
+            }),
+            invalidatesTags: ["Auth"]
         }),
         signUpwithGoogle: builder.mutation({
             query: (idToken) => ({
@@ -21,7 +23,8 @@ export const authApiSlice = createApi({
                     Authorization: `Bearer ${idToken}`,
                     'Content-Type': 'application/json'
                 }
-            })
+            }),
+            invalidatesTags: ["Auth"]
         })
     })
 })
