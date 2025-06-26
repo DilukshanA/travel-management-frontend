@@ -26,19 +26,21 @@ const SignUpForm = () => {
         password: formik.values.password,
         role: 'user'
       }).unwrap();
-      toast.success('User registered successfully!');
-      console.log('SignUp Result:', result);  
+      toast.success(result.message || 'User registered successfully!');
+      
+      // navigate to otp page
+      setTimeout(() => {
+        router.push('/signup/otp-verification')
+      }, 1000);
     } catch (error : any) {
-      console.log('Error during signup:', error);
-      toast.error(`Signup failed: ${error.data.error || 'An unexpected error occurred'}`)
-    }
-  }
 
-      //   console.log('isLoading:', isLoading);
-      // console.log('isSuccess:', isSuccess);
-      // console.log('isError:', isError);
-      // console.log('status:', status);
-      // console.log('error:', error);     
+      if(error?.originalStatus === 404) {
+        toast.error('Server problem occurred !');
+      } else {
+        toast.error(`Signup failed: ${error.data.message || 'An unexpected error occurred'}`)
+      }
+    }
+  }   
 
   const formik = useFormik({
   initialValues: signUpInitialValues,
@@ -46,14 +48,13 @@ const SignUpForm = () => {
   validate: signUpValidate,
 });
 
-//console.log('Formik validation errors: ', formik.errors)
   return (
     <Box component="form" sx={{
       mt: 4,
       }}
       onSubmit={formik.handleSubmit}
     >
-      <LoadingBackdrop open={isLoading} />
+      <LoadingBackdrop open={isLoading || isSuccess} />
       <Box sx={{
         display: 'flex',
         flexDirection: 'column',
