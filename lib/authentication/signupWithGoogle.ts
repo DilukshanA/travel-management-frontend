@@ -1,3 +1,4 @@
+//this file is not used
 import { AuthError, signInWithPopup } from "firebase/auth";
 import { auth, googleProvider } from "../firebaseConfig";
 import toast from "react-hot-toast";
