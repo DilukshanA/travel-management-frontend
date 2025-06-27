@@ -2,13 +2,16 @@
 import { OTP } from '@/components/ui/OTP'
 import { Box, Button, Typography } from '@mui/material';
 import axios from 'axios';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
 
 const page = () => {
 
   const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const email = searchParams.get('email');
 
     const [otp, setOtp] = useState('');
 
@@ -66,7 +69,6 @@ const page = () => {
         }
       }
     }
-    const email = "abc123@gmail.com";
 
   return (
     <Box className='h-screen flex items-center justify-center'>
@@ -78,7 +80,7 @@ const page = () => {
           <Typography variant='h4' sx={{ fontWeight: 'bold', mb: 2 }}>
             OTP Verification
           </Typography>
-          <Typography variant='body1' sx={{ mb: 4 }}>
+          <Typography variant='body1' sx={{ mb: 4 , textAlign: 'center' }}>
             Please enter the OTP sent to {email}
           </Typography>
         </Box>
