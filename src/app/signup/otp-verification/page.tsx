@@ -1,5 +1,6 @@
 "use client";
 import { OTP } from '@/components/ui/OTP'
+import { useSignUpOtpVerifyMutation } from '@/redux/reducers/otpApiSlice';
 import { Box, Button, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -15,7 +16,25 @@ const page = () => {
 
     const [otp, setOtp] = useState('');
 
+    const [ signUpOtpVerify ] = useSignUpOtpVerifyMutation();
+
     const handleSubmit = async () => {
+
+      try {
+        if(!otp|| otp.length !== 6) {
+          toast.error('Please enter a valid 6-digit OTP')
+          return;
+        }
+
+        const result = await signUpOtpVerify({email, otp}).unwrap();
+        
+      } catch (error) {
+        
+      }
+
+    }
+
+    const handleSubmit2 = async () => {
 
 
       try {
