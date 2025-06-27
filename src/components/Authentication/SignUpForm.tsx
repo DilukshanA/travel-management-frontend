@@ -30,7 +30,7 @@ const SignUpForm = () => {
       
       // navigate to otp page
       setTimeout(() => {
-        router.push('/signup/otp-verification')
+        router.push(`/signup/otp-verification?email=${encodeURIComponent(formik.values.email)}`)
       }, 1000);
     } catch (error : any) {
 
