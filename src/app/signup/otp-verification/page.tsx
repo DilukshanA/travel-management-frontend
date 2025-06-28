@@ -1,4 +1,5 @@
 "use client";
+import LoadingBackdrop from '@/components/ui/LoadingBackdrop';
 import { OTP } from '@/components/ui/OTP'
 import { useSignUpOtpResendMutation, useSignUpOtpVerifyMutation } from '@/redux/reducers/otpApiSlice';
 import { Box, Button, Typography } from '@mui/material';
@@ -15,7 +16,7 @@ const page = () => {
 
     const [otp, setOtp] = useState('');
 
-    const [ signUpOtpVerify ] = useSignUpOtpVerifyMutation();
+    const [ signUpOtpVerify, { isLoading, isSuccess, isError, error } ] = useSignUpOtpVerifyMutation();
     const [ signUpOtpResend ] = useSignUpOtpResendMutation();
 
     const handleVerifyOtp = async () => {
@@ -28,8 +29,13 @@ const page = () => {
 
         const result = await signUpOtpVerify({email, otp}).unwrap();
         toast.success(result.message ||'OTP verified successfully!');
+        // remove user data from local storage
+        localStorage.removeItem('signUpUserData');
         console.log(result);
-        router.push('/');
+        // navigate to home page
+        setTimeout(() => {
+          router.push('/');
+        }, 1000);
         
       } catch (error : any) {
         if(error?.originalStatus === 404) {
@@ -72,6 +78,7 @@ const page = () => {
 
   return (
     <Box className='h-screen flex items-center justify-center'>
+    <LoadingBackdrop open={isLoading || isSuccess} />
       <Box className='px-16 py-8 rounded-2xl flex flex-col items-center
       justify-center bg-white'>
         <Box
