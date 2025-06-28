@@ -1,6 +1,6 @@
 "use client";
 import { OTP } from '@/components/ui/OTP'
-import { useSignUpOtpVerifyMutation } from '@/redux/reducers/otpApiSlice';
+import { useSignUpOtpResendMutation, useSignUpOtpVerifyMutation } from '@/redux/reducers/otpApiSlice';
 import { Box, Button, Typography } from '@mui/material';
 import axios from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -17,6 +17,7 @@ const page = () => {
     const [otp, setOtp] = useState('');
 
     const [ signUpOtpVerify ] = useSignUpOtpVerifyMutation();
+    const [ signUpOtpResend ] = useSignUpOtpResendMutation();
 
     const handleSubmit = async () => {
 
@@ -27,9 +28,16 @@ const page = () => {
         }
 
         const result = await signUpOtpVerify({email, otp}).unwrap();
+        toast.success(result.message ||'OTP verified successfully!');
+        console.log(result);
+        router.push('/');
         
-      } catch (error) {
-        
+      } catch (error : any) {
+        if(error?.originalStatus === 404) {
+          toast.error('Server problem occurred !');
+        } else {
+          toast.error(`${error.data.message || 'An unexpected error occurred'}`)
+        }
       }
 
     }
@@ -89,6 +97,31 @@ const page = () => {
       }
     }
 
+
+
+    const handleSubmitResendOtp = async () => {
+
+      const localStorageData = localStorage.getItem('signUpUserData');
+      if (!localStorageData) {
+        toast.error("please try again later");
+        return;
+      }
+      const { email, firstName } = JSON.parse(localStorageData);
+
+      console.log(email, firstName);
+      try {
+        const result = await signUpOtpResend({
+          email,
+          name: firstName
+        }).unwrap();
+        console.log(result);
+        toast.success('OTP resent successfully!')
+      } catch (error) {
+        console.error('Error resending OTP:', error);
+      }
+
+    }
+
   return (
     <Box className='h-screen flex items-center justify-center'>
       <Box className='px-16 py-8 rounded-2xl flex flex-col items-center
@@ -115,13 +148,7 @@ const page = () => {
             variant='text'
             color='primary'
             sx={{ mt: 2 }}
-            onClick={() => {
-              // Logic to resend OTP
-              toast.success('OTP resent successfully!', {
-                duration: 3000,
-                position: 'top-right'
-              });
-            }}
+            onClick={handleSubmitResendOtp}
           >
             Resend OTP
           </Button>

@@ -12,10 +12,20 @@ export const otpApiSlice = createApi({
                 method: "POST",
                 body: { email, otp }
             })
+        }),
+        signUpOtpResend: builder.mutation({
+            query: ({ email, name }) => ({
+                url: "/api/auth/signup-resend-otp",
+                method: "POST",
+                body: { email, name }
+            })
         })
     })
 })
 
 // Export hooks for usage in function components, which are
 // auto-generated based on the defined endpoints
-export const { useSignUpOtpVerifyMutation } = otpApiSlice;
+export const { 
+    useSignUpOtpVerifyMutation,
+    useSignUpOtpResendMutation
+} = otpApiSlice;
