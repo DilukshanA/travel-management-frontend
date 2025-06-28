@@ -78,7 +78,7 @@ const SignUpForm = () => {
                 value={formik.values.firstName}
                 onBlur={formik.handleBlur}
                 error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-                helperText={formik.touched.firstName &&formik.errors.firstName}
+                helperText={formik.touched.firstName && formik.errors.firstName}
             />
           </Box>
           <Box>
