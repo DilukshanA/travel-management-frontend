@@ -27,6 +27,13 @@ const SignUpForm = () => {
         role: 'user'
       }).unwrap();
       toast.success(result.message || 'User registered successfully!');
+
+      // Store email and firstname with 2-hour expiry
+      localStorage.setItem('signUpUserData', JSON.stringify({
+        email: formik.values.email,
+        firstName: formik.values.firstName,
+        expiry: Date.now() + 2 * 60 * 60 * 1000 // 2 hours in milliseconds
+      }))
       
       // navigate to otp page
       setTimeout(() => {
