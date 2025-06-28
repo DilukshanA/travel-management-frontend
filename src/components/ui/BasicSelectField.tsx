@@ -4,19 +4,28 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { FormHelperText } from '@mui/material';
 
 type BasicSelectFieldProps = {
+  name: string;
   fieldName: string;
   names?: string[];
   value?: string;
   onChange?: (value: string) => void;
+  onBlur?: (event: React.FocusEvent<any>) => void;
+  error?: boolean;
+  helperText?: React.ReactNode;
 };
 
 export default function BasicSelectField({
+  name,
   fieldName,
   names = [],
   value: externalValue,
   onChange,
+  onBlur = () => {}, // Default to a no-op function if not provided
+  error,
+  helperText
 }: BasicSelectFieldProps) {
   const [internalValue, setInternalValue] = React.useState<string>('');
 
@@ -32,14 +41,16 @@ export default function BasicSelectField({
 
   return (
     <Box sx={{ minWidth: 120 }}>
-      <FormControl fullWidth>
+      <FormControl fullWidth error={error}>
         <InputLabel id={`${fieldName}-label`}>{fieldName}</InputLabel>
         <Select
           labelId={`${fieldName}-label`}
           id={`${fieldName}-select`}
+          name={name}
           value={value}
           label={fieldName}
           onChange={handleSelectChange}
+          onBlur={onBlur}
         >
           {names.map((name, index) => (
             <MenuItem key={index} value={name}>
@@ -47,6 +58,7 @@ export default function BasicSelectField({
             </MenuItem>
           ))}
         </Select>
+        {helperText && <FormHelperText>{helperText}</FormHelperText>}
       </FormControl>
     </Box>
   );
