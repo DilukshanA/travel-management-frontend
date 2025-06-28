@@ -2,7 +2,6 @@
 import { OTP } from '@/components/ui/OTP'
 import { useSignUpOtpResendMutation, useSignUpOtpVerifyMutation } from '@/redux/reducers/otpApiSlice';
 import { Box, Button, Typography } from '@mui/material';
-import axios from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
@@ -19,7 +18,7 @@ const page = () => {
     const [ signUpOtpVerify ] = useSignUpOtpVerifyMutation();
     const [ signUpOtpResend ] = useSignUpOtpResendMutation();
 
-    const handleSubmit = async () => {
+    const handleVerifyOtp = async () => {
 
       try {
         if(!otp|| otp.length !== 6) {
@@ -42,63 +41,6 @@ const page = () => {
 
     }
 
-    const handleSubmit2 = async () => {
-
-
-      try {
-        if (!otp || otp.length !== 6) {
-          toast.error('Please enter a valid 6-digit OTP', {
-            duration: 3000,
-            position: 'top-right'
-          });
-          return;
-        }
-
-        const response = await axios.post('http://localhost:4000/api/auth/signup-otp-verify', {
-          email: localStorage.getItem('email'),
-          otp: otp
-        })
-
-        if (response.status === 200) {
-          toast.success('OTP verified successfully!', {
-            duration: 3000,
-            position: 'top-right'
-          });
-          localStorage.removeItem('email');
-          router.push('/');
-
-        } else if (response.status === 404) {
-          toast.error('OTP not found or Expired. Please try again.', {
-            duration: 3000,
-            position: 'top-right'
-          });
-
-        } else {
-          toast.error('Failed to verify OTP. Please try again.', {
-            duration: 3000,
-            position: 'top-right'
-          });
-
-        }
-      } catch (error) {
-
-        if (axios.isAxiosError(error)) {
-          toast.error('Failed to verify OTP. Please try again.', {
-            duration: 3000,
-            position: 'top-right'
-          });
-
-        } else if (error instanceof Error){
-          toast.error(error.message, { duration: 3000});
-          
-        } else {
-          toast.error('An unexpected error occurred. Please try again.', {duration: 3000});
-        }
-      }
-    }
-
-
-
     const handleSubmitResendOtp = async () => {
 
       const localStorageData = localStorage.getItem('signUpUserData');
@@ -116,10 +58,16 @@ const page = () => {
         }).unwrap();
         console.log(result);
         toast.success('OTP resent successfully!')
-      } catch (error) {
-        console.error('Error resending OTP:', error);
-      }
+      } catch (err: any) {
 
+        console.log('Error resending OTP:', err);
+        if(err?.originalStatus === 404) {
+          toast.error('Server problem occurred !');
+        } else {
+          toast.error(`${err.data.message || 'An unexpected error occurred'}`)
+        }
+
+      }
     }
 
   return (
@@ -158,7 +106,7 @@ const page = () => {
             fullWidth
             size='large'
             sx={{ mt: 2 }}
-            onClick={handleSubmit}
+            onClick={handleVerifyOtp}
           >
             Verify
           </Button>
