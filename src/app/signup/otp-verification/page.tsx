@@ -1,8 +1,7 @@
 "use client";
 import { OTP } from '@/components/ui/OTP'
-import { useSignUpOtpVerifyMutation } from '@/redux/reducers/otpApiSlice';
+import { useSignUpOtpResendMutation, useSignUpOtpVerifyMutation } from '@/redux/reducers/otpApiSlice';
 import { Box, Button, Typography } from '@mui/material';
-import axios from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import React, { useState } from 'react'
 import toast from 'react-hot-toast';
@@ -17,8 +16,9 @@ const page = () => {
     const [otp, setOtp] = useState('');
 
     const [ signUpOtpVerify ] = useSignUpOtpVerifyMutation();
+    const [ signUpOtpResend ] = useSignUpOtpResendMutation();
 
-    const handleSubmit = async () => {
+    const handleVerifyOtp = async () => {
 
       try {
         if(!otp|| otp.length !== 6) {
@@ -27,65 +27,46 @@ const page = () => {
         }
 
         const result = await signUpOtpVerify({email, otp}).unwrap();
+        toast.success(result.message ||'OTP verified successfully!');
+        console.log(result);
+        router.push('/');
         
-      } catch (error) {
-        
+      } catch (error : any) {
+        if(error?.originalStatus === 404) {
+          toast.error('Server problem occurred !');
+        } else {
+          toast.error(`${error.data.message || 'An unexpected error occurred'}`)
+        }
       }
 
     }
 
-    const handleSubmit2 = async () => {
+    const handleSubmitResendOtp = async () => {
 
+      const localStorageData = localStorage.getItem('signUpUserData');
+      if (!localStorageData) {
+        toast.error("please try again later");
+        return;
+      }
+      const { email, firstName } = JSON.parse(localStorageData);
 
+      console.log(email, firstName);
       try {
-        if (!otp || otp.length !== 6) {
-          toast.error('Please enter a valid 6-digit OTP', {
-            duration: 3000,
-            position: 'top-right'
-          });
-          return;
-        }
+        const result = await signUpOtpResend({
+          email,
+          name: firstName
+        }).unwrap();
+        console.log(result);
+        toast.success('OTP resent successfully!')
+      } catch (err: any) {
 
-        const response = await axios.post('http://localhost:4000/api/auth/signup-otp-verify', {
-          email: localStorage.getItem('email'),
-          otp: otp
-        })
-
-        if (response.status === 200) {
-          toast.success('OTP verified successfully!', {
-            duration: 3000,
-            position: 'top-right'
-          });
-          localStorage.removeItem('email');
-          router.push('/');
-
-        } else if (response.status === 404) {
-          toast.error('OTP not found or Expired. Please try again.', {
-            duration: 3000,
-            position: 'top-right'
-          });
-
+        console.log('Error resending OTP:', err);
+        if(err?.originalStatus === 404) {
+          toast.error('Server problem occurred !');
         } else {
-          toast.error('Failed to verify OTP. Please try again.', {
-            duration: 3000,
-            position: 'top-right'
-          });
-
+          toast.error(`${err.data.message || 'An unexpected error occurred'}`)
         }
-      } catch (error) {
 
-        if (axios.isAxiosError(error)) {
-          toast.error('Failed to verify OTP. Please try again.', {
-            duration: 3000,
-            position: 'top-right'
-          });
-
-        } else if (error instanceof Error){
-          toast.error(error.message, { duration: 3000});
-          
-        } else {
-          toast.error('An unexpected error occurred. Please try again.', {duration: 3000});
-        }
       }
     }
 
@@ -115,13 +96,7 @@ const page = () => {
             variant='text'
             color='primary'
             sx={{ mt: 2 }}
-            onClick={() => {
-              // Logic to resend OTP
-              toast.success('OTP resent successfully!', {
-                duration: 3000,
-                position: 'top-right'
-              });
-            }}
+            onClick={handleSubmitResendOtp}
           >
             Resend OTP
           </Button>
@@ -131,7 +106,7 @@ const page = () => {
             fullWidth
             size='large'
             sx={{ mt: 2 }}
-            onClick={handleSubmit}
+            onClick={handleVerifyOtp}
           >
             Verify
           </Button>
