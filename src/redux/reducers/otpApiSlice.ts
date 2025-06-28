@@ -3,7 +3,8 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const otpApiSlice = createApi({
     reducerPath : "otpApi",
     baseQuery: fetchBaseQuery({
-        baseUrl: "http://localhost:4000"
+        baseUrl: "http://localhost:4000",
+        credentials: "include",
     }),
     endpoints: (builder) => ({
         signUpOtpVerify: builder.mutation({
