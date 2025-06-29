@@ -6,30 +6,30 @@ import { useFormik } from 'formik';
 import { validateAddRoleAndName } from '@/forms/add-role-and-name/validation';
 import { FormValueTypes } from '@/forms/add-role-and-name/types';
 import BasicSelectField from '../ui/BasicSelectField';
-import { useGetUserDataQuery } from '@/redux/reducers/authApiSlice';
+import { useGetUserDataQuery, useUpdateUserDataMutation } from '@/redux/reducers/authApiSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectUserData, setUserData } from '@/redux/reducers/userSlice';
 import LoadingBackdrop from '../ui/LoadingBackdrop';
+import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 const AddRoleAndName = () => {
 
-  // const [role, setRole] = React.useState<string>('');
-
-  const { data : userData, isLoading, isError, error } = useGetUserDataQuery();
-
-  console.log('User data:', userData?.user.firstName);
+  const { data : userData, isLoading : isUserDataLoading } = useGetUserDataQuery();
+  const [ updateUserData, { isLoading, isSuccess, isError, error} ] = useUpdateUserDataMutation();
 
   const userDetails = useSelector(selectUserData);
 
   const dispatch = useDispatch();
 
+  const router = useRouter();
+
+  // Effect to set user data in redux store
   useEffect(() => {
     if (userData) {
       dispatch(setUserData(userData.user));
     }
   },[userData, dispatch]);
-
-  console.log('User details from redux:', userDetails);
 
   const initialValues: FormValueTypes = {
     firstName: userDetails.firstName,
@@ -37,11 +37,31 @@ const AddRoleAndName = () => {
     role: userData?.user.role || '',
   }
 
-  const onSubmit = (values: FormValueTypes) => {
-    console.log('form valuse: ' ,values);
-  }
+  const onSubmit = async () => {
+    try {
+      const result = await updateUserData({
+        firstName: formik.values.firstName,
+        lastName: formik.values.lastName,
+        role: formik.values.role
+      }).unwrap();
+      toast('Welcome to Travel Management App!', {icon: '🙂',});
 
-  // console.log(role ? role : 'No role selected');
+      // navigate to home page after 1 second
+      setTimeout(() => {
+        router.push('/');
+      }, 1000);
+    } catch (err: any) {
+      if (err?.originalStatus === 404) {
+        toast.error('Server problem occurred!');
+      }
+      else if (err?.originalStatus === 500) {
+        toast.error('Internal server error!');
+      }
+      else {
+        toast.error('Error occured');
+      }
+    }
+  }
 
   const formik = useFormik({
     initialValues: initialValues,
@@ -56,7 +76,7 @@ const AddRoleAndName = () => {
         display: 'flex',
         gap: 2
       }}>
-        <LoadingBackdrop open={isLoading} />
+        <LoadingBackdrop open={isLoading || isSuccess} />
         <Box>
           <TextField id='firstName' label="First Name" variant='outlined'
               name='firstName' size='medium'

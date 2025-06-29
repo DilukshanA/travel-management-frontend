@@ -54,5 +54,6 @@ export const authApiSlice = createApi({
 export const { 
     useSignUpWithEmailPasswordMutation,
     useSignUpwithGoogleMutation,
-    useGetUserDataQuery
+    useGetUserDataQuery,
+    useUpdateUserDataMutation
 } = authApiSlice;
