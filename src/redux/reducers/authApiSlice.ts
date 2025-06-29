@@ -32,7 +32,19 @@ export const authApiSlice = createApi({
             query: () => ({
                 url: '/api/get-user-data',
                 method: 'GET',
-            })
+            }),
+            providesTags: (result, error, arg) => 
+                result ? [{ type: 'Auth', id: result.id }] : ['Auth']
+        }),
+        // update user data with cookie
+        updateUserData: builder.mutation({
+            query: (userData) => ({
+                url: '/api/update-user-data',
+                method: 'PUT',
+                body: userData
+            }),
+            invalidatesTags: (result, error, arg) =>
+                result ? [{ type: 'Auth', id: result.id }] : ['Auth']
         })
     })
 })
