@@ -67,7 +67,11 @@ const AddRoleAndName = () => {
         <BasicSelectField
           fieldName="Role"
           name='role'
-          names={['Passenger', 'Driver', `Driver's Assistant`]}
+          names={[
+            { label: 'Passenger', value: 'Passenger' },
+            { label: 'Driver', value: 'Driver' },
+            { label: "Driver's Assistant", value: 'Assistant' },
+          ]}
           onChange={(value : string) => formik.setFieldValue('role', value)}
           value={formik.values.role}
           onBlur={formik.handleBlur}
