@@ -21,30 +21,29 @@ const page = () => {
     try {
       // sign up with google popup firebase auth
       const userCredential = await signInWithPopup(auth, googleProvider)
-      console.log('User signed up with Google:', userCredential.user);
+      // console.log('User signed up with Google:', userCredential.user);
 
       // get ID token
       const idToken = await userCredential.user.getIdToken();
-      console.log("ID Token : ", idToken);
 
       const result = await signUp(idToken).unwrap();
       console.log('SignUp Result:', result);
       // Display: User registered successfully! from backend
       toast.success(result.message || 'User signed up with successfully!')
 
-      // navigate to add role and name page
-      // router.push('/signup/add-your-role')
+      console.log("New user : ", )
 
+      // navigate to add role and name page
       setTimeout(() => {
-        // Redirect to add your role and name page after 1 seconds
-        router.push('/signup/add-your-role');
+        // if new user navigate to add role and name page , if not new user navigate to home page
+        router.push(`${result.isNewUser ? '/signup/add-your-role' : '/'}`)
+        // router.push('/signup/add-your-role');
       }, 1000);
 
     } catch (err: any) {
       // when server is not running or connection refused
       if (err?.originalStatus === 404) {
         toast.error("Server problem occurred !")
-        console.log('Error bng -- ', err.originalStatus)
       } 
       // Internal Server Error
       else if (err?.originalStatus === 500) {
