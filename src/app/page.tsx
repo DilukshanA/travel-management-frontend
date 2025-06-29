@@ -1,5 +1,6 @@
 "use client"
-import { useGetUserDataQuery } from "@/redux/reducers/userApiSlice";
+
+import { useGetUserDataQuery } from "@/redux/reducers/authApiSlice";
 
 export default function Home() {
 
