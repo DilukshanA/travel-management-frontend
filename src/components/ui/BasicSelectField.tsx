@@ -6,10 +6,15 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { FormHelperText } from '@mui/material';
 
+type Option = {
+  label: string;
+  value: string;
+};
+
 type BasicSelectFieldProps = {
   name: string;
   fieldName: string;
-  names?: string[];
+  names?: Option[];
   value?: string;
   onChange?: (value: string) => void;
   onBlur?: (event: React.FocusEvent<any>) => void;
@@ -23,7 +28,7 @@ export default function BasicSelectField({
   names = [],
   value: externalValue,
   onChange,
-  onBlur = () => {}, // Default to a no-op function if not provided
+  onBlur = () => {},
   error,
   helperText
 }: BasicSelectFieldProps) {
@@ -36,7 +41,7 @@ export default function BasicSelectField({
     if (externalValue === undefined) {
       setInternalValue(selectedValue);
     }
-    onChange?.(selectedValue); // Call the external onChange if provided
+    onChange?.(selectedValue);
   };
 
   return (
@@ -52,9 +57,9 @@ export default function BasicSelectField({
           onChange={handleSelectChange}
           onBlur={onBlur}
         >
-          {names.map((name, index) => (
-            <MenuItem key={index} value={name}>
-              {name}
+          {names.map((option, index) => (
+            <MenuItem key={index} value={option.value}>
+              {option.label}
             </MenuItem>
           ))}
         </Select>
