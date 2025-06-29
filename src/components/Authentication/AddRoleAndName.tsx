@@ -1,35 +1,39 @@
 "Use client";
 import { Box, Button, FormControl, InputLabel, MenuItem, TextField } from '@mui/material'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useFormik } from 'formik';
 import { validateAddRoleAndName } from '@/forms/add-role-and-name/validation';
 import { FormValueTypes } from '@/forms/add-role-and-name/types';
 import BasicSelectField from '../ui/BasicSelectField';
 import { useGetUserDataQuery } from '@/redux/reducers/authApiSlice';
-import { useSelector } from 'react-redux';
-import { selectUser } from '@/redux/reducers/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { selectUserData, setUserData } from '@/redux/reducers/userSlice';
+import LoadingBackdrop from '../ui/LoadingBackdrop';
 
 const AddRoleAndName = () => {
 
   // const [role, setRole] = React.useState<string>('');
 
-  const { data : userData } = useGetUserDataQuery();
+  const { data : userData, isLoading, isError, error } = useGetUserDataQuery();
 
   console.log('User data:', userData?.user.firstName);
 
-  const userDetails = useSelector(selectUser);
+  const userDetails = useSelector(selectUserData);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (userData) {
+      dispatch(setUserData(userData.user));
+    }
+  },[userData, dispatch]);
 
   console.log('User details from redux:', userDetails);
 
-
-    const handleChange = (event: SelectChangeEvent) => {
-    // setAge(event.target.value as string);
-    console.log(event.target.value);
-  };
   const initialValues: FormValueTypes = {
-    firstName: userData?.user.firstName || '',
-    lastName: userData?.user.lastName || '',
+    firstName: userDetails.firstName,
+    lastName: userDetails.lastName,
     role: userData?.user.role || '',
   }
 
@@ -41,6 +45,7 @@ const AddRoleAndName = () => {
 
   const formik = useFormik({
     initialValues: initialValues,
+    enableReinitialize: true,
     onSubmit: onSubmit,
     validate: validateAddRoleAndName
   })
@@ -51,6 +56,7 @@ const AddRoleAndName = () => {
         display: 'flex',
         gap: 2
       }}>
+        <LoadingBackdrop open={isLoading} />
         <Box>
           <TextField id='firstName' label="First Name" variant='outlined'
               name='firstName' size='medium'

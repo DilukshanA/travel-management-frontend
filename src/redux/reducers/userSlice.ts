@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../store";
 
 type UserState = {
     firstName: string;
@@ -8,10 +9,10 @@ type UserState = {
 }
 
 const initialState : UserState = {
-    firstName: "abc",
-    lastName: "def",
-    role: "user",
-    email: "dilukshan",
+    firstName: "",
+    lastName: "",
+    role: "",
+    email: "",
 }
 
 export const userSlice = createSlice({
@@ -32,7 +33,7 @@ export const userSlice = createSlice({
 export const { setUserData } = userSlice.actions;
 
 // export const { setUserData } = userSlice.actions;
-export const selectUser = (state : any) => state.user;
+export const selectUserData = (state : RootState) => state.userSlice;
 
 // export reducer
 export const userSliceReducer = userSlice.reducer;
