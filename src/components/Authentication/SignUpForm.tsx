@@ -24,7 +24,7 @@ const SignUpForm = () => {
         lastName: formik.values.lastName,
         email: formik.values.email,
         password: formik.values.password,
-        role: 'user'
+        role: 'Passenger'
       }).unwrap();
       toast.success(result.message || 'User registered successfully!');
 

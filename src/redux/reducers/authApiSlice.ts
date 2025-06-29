@@ -4,7 +4,7 @@ export const authApiSlice = createApi({
     reducerPath: "authApi",
     baseQuery: fetchBaseQuery({
         baseUrl: "http://localhost:4000",
-        credentials: "include",
+        credentials: "include", // Send cookies with the request
     }),
     tagTypes: ["Auth"],
     endpoints: (builder) => ({
@@ -26,6 +26,13 @@ export const authApiSlice = createApi({
                 }
             }),
             invalidatesTags: ["Auth"]
+        }),
+        getUserData: builder.query<any, void>({
+            // Fetch user data with cookie
+            query: () => ({
+                url: '/api/get-user-data',
+                method: 'GET',
+            })
         })
     })
 })
@@ -34,5 +41,6 @@ export const authApiSlice = createApi({
 // auto-generated based on the defined endpoints
 export const { 
     useSignUpWithEmailPasswordMutation,
-    useSignUpwithGoogleMutation
+    useSignUpwithGoogleMutation,
+    useGetUserDataQuery
 } = authApiSlice;
