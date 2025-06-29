@@ -3,20 +3,35 @@ import { Box, Button, FormControl, InputLabel, MenuItem, TextField } from '@mui/
 import React from 'react'
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useFormik } from 'formik';
-import { initialValues } from '@/forms/add-role-and-name/initialValues';
 import { validateAddRoleAndName } from '@/forms/add-role-and-name/validation';
 import { FormValueTypes } from '@/forms/add-role-and-name/types';
 import BasicSelectField from '../ui/BasicSelectField';
+import { useGetUserDataQuery } from '@/redux/reducers/authApiSlice';
+import { useSelector } from 'react-redux';
+import { selectUser } from '@/redux/reducers/userSlice';
 
 const AddRoleAndName = () => {
 
-  const [role, setRole] = React.useState<string>('');
+  // const [role, setRole] = React.useState<string>('');
+
+  const { data : userData } = useGetUserDataQuery();
+
+  console.log('User data:', userData?.user.firstName);
+
+  const userDetails = useSelector(selectUser);
+
+  console.log('User details from redux:', userDetails);
 
 
     const handleChange = (event: SelectChangeEvent) => {
     // setAge(event.target.value as string);
     console.log(event.target.value);
   };
+  const initialValues: FormValueTypes = {
+    firstName: userData?.user.firstName || '',
+    lastName: userData?.user.lastName || '',
+    role: userData?.user.role || '',
+  }
 
   const onSubmit = (values: FormValueTypes) => {
     console.log('form valuse: ' ,values);
