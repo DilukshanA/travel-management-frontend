@@ -12,10 +12,14 @@ import LoadingBackdrop from '../ui/LoadingBackdrop'
 import { useRouter } from 'next/navigation'
 import toast from 'react-hot-toast'
 import { getErrorMessage } from '../../../lib/authentication/authExceptions'
+import { useDispatch } from 'react-redux'
+import { setUserData } from '@/redux/reducers/userSlice'
 
 const LoginForm = () => {
 
   const [ loginWithEmailPassword, { isLoading, isSuccess, isError, error } ] = useLoginWithEmailPasswordMutation();
+
+  const dispatch = useDispatch();
 
   const router = useRouter();
 
@@ -26,14 +30,24 @@ const LoginForm = () => {
         throw new Error('Email and password are required.');
       }
       const userCredential = await signInWithEmailAndPassword(auth, formik.values.email, formik.values.password );
-      console.log('User logged in successfully:', userCredential.user);
+      // console.log('User logged in successfully:', userCredential.user);
 
       // get ID token
       const idToken = await userCredential.user.getIdToken();
 
       const result = await loginWithEmailPassword(idToken).unwrap();
-      console.log('Login Result:', result);
-      toast.success("Hi, " + result.user.firstName + "! You have logged in successfully.");
+      //console.log('Login Result:', result.user);
+      // dispatch user data to redux store
+      if (result.user) {
+        dispatch(setUserData(result.user));
+      }
+
+      // navigate to home page after 1 second
+      // setTimeout(() => {
+      //   router.push('/');
+      // }, 1000);
+      /// welcome toast message
+      toast.success("Hi, " + result.user.firstName + "! Welcome back to Travel Management App!");
 
     } catch (err : any) {
       // when server is not running or connection refused
