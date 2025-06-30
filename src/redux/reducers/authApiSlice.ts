@@ -38,6 +38,13 @@ export const authApiSlice = createApi({
             }),
             invalidatesTags: ["Auth"]
         }),
+        logout: builder.mutation({
+            query: () => ({
+                url: '/api/auth/logout',
+                method: 'POST',
+            }),
+            invalidatesTags: ["Auth"]
+        }),
         getUserData: builder.query<any, void>({
             // Fetch user data with cookie
             query: () => ({
@@ -66,6 +73,7 @@ export const {
     useSignUpWithEmailPasswordMutation,
     useSignUpwithGoogleMutation,
     useLoginWithEmailPasswordMutation,
+    useLogoutMutation,
     useGetUserDataQuery,
     useUpdateUserDataMutation
 } = authApiSlice;

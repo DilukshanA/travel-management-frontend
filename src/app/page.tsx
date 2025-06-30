@@ -1,5 +1,6 @@
 "use client"
 
+import Logout from "@/components/Authentication/Logout";
 import { useGetUserDataQuery } from "@/redux/reducers/authApiSlice";
 
 export default function Home() {
@@ -12,6 +13,7 @@ export default function Home() {
   return (
     <div className="">
       <h1>Home</h1>
+      <Logout/>
     </div>
   );
 }
