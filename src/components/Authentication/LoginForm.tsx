@@ -47,7 +47,7 @@ const LoginForm = () => {
         router.push('/');
       }, 1000);
       /// welcome toast message
-      toast.success("Hi, " + result.user.firstName + "! Welcome back to Travel Management App!");
+      toast.success("Hi, " + result.user.firstName + "! Welcome back to Autonix!");
 
     } catch (err : any) {
       // when server is not running or connection refused

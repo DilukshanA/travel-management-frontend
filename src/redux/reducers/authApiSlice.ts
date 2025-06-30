@@ -38,7 +38,7 @@ export const authApiSlice = createApi({
             }),
             invalidatesTags: ["Auth"]
         }),
-        logout: builder.mutation({
+        logout: builder.mutation<{ message: string }, void>({
             query: () => ({
                 url: '/api/auth/logout',
                 method: 'POST',
