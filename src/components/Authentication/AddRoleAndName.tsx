@@ -44,7 +44,7 @@ const AddRoleAndName = () => {
         lastName: formik.values.lastName,
         role: formik.values.role
       }).unwrap();
-      toast('Welcome to Travel Management App!', {icon: '🙂',});
+      // toast('Welcome to Autonix!', {icon: '🙂',});
 
       // navigate to home page after 1 second
       setTimeout(() => {

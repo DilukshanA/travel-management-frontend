@@ -1,4 +1,5 @@
 "use client";
+import GooglePopUpSignIn from '@/components/Authentication/GooglePopUpSignIn';
 import LoginForm from '@/components/Authentication/LoginForm';
 import TextButton from '@/components/ui/TextButton';
 import { Box, Button, Container, Divider, Link, Paper, Typography } from '@mui/material'
@@ -25,27 +26,8 @@ const page = () => {
               Welcome back
             </Typography>
           </Box>
-
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '100%',
-              my: 3
-            }}
-          >
-            <Button
-              variant='outlined'
-              startIcon={<FcGoogle />}
-              color="inherit"
-              sx={{
-                width: '100%',
-              }}
-            >
-              Continue with Google
-            </Button>
-          </Box>
+          
+          <GooglePopUpSignIn/>
 
           <Box
             sx={{
