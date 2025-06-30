@@ -18,7 +18,7 @@ export const authApiSlice = createApi({
         }),
         signUpwithGoogle: builder.mutation({
             query: (idToken) => ({
-                url: "/api/auth/signup-with-google",
+                url: "/api/auth/signIn-with-google",
                 method: "POST",
                 headers: {
                     Authorization: `Bearer ${idToken}`,
