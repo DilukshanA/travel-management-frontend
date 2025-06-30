@@ -1,9 +1,15 @@
+"use client";
 import LoginForm from '@/components/Authentication/LoginForm';
+import TextButton from '@/components/ui/TextButton';
 import { Box, Button, Container, Divider, Link, Paper, Typography } from '@mui/material'
+import NextLink from 'next/link';
+import { useRouter } from 'next/navigation';
 import React from 'react'
 import { FcGoogle } from "react-icons/fc";
 
 const page = () => {
+
+  const router = useRouter();
   return (
     <Container maxWidth="xs">
         <Paper elevation={10} sx={{ my:8, padding: 2}}>
@@ -65,17 +71,12 @@ const page = () => {
               justifyContent: 'center',
               mb:2
             }}>
-              <Typography sx={{ fontSize: '1rem' }}>
+              <Typography sx={{ fontSize: '1rem' , display:'flex' , alignItems: 'center' }}>
                 Don't have an account?
-                <Link
-                  href="/signup"
-                  underline="hover"
-                  sx={{
-                    ml: 0.5,
-                  }}
-                >
-                  sign up
-                </Link>
+                <TextButton
+                  onClick={() => router.push('/signup')}
+                  text="sign up"
+                />
               </Typography>
             </Box>
         </Paper>
