@@ -43,9 +43,9 @@ const LoginForm = () => {
       }
 
       // navigate to home page after 1 second
-      // setTimeout(() => {
-      //   router.push('/');
-      // }, 1000);
+      setTimeout(() => {
+        router.push('/');
+      }, 1000);
       /// welcome toast message
       toast.success("Hi, " + result.user.firstName + "! Welcome back to Travel Management App!");
 
