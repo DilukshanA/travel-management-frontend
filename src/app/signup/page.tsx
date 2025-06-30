@@ -10,6 +10,7 @@ import toast from 'react-hot-toast';
 import { getErrorMessage } from '../../../lib/authentication/authExceptions';
 import LoadingBackdrop from '@/components/ui/LoadingBackdrop';
 import { useRouter } from 'next/navigation';
+import TextButton from '@/components/ui/TextButton';
 
 const page = () => {
 
@@ -30,8 +31,6 @@ const page = () => {
       console.log('SignUp Result:', result);
       // Display: User registered successfully! from backend
       toast.success(result.message || 'User signed up with successfully!')
-
-      console.log("New user : ", )
 
       // navigate to add role and name page
       setTimeout(() => {
@@ -122,17 +121,12 @@ const page = () => {
               justifyContent: 'center',
               mb:2
             }}>
-              <Typography sx={{ fontSize: '1rem' }}>
+              <Typography sx={{ fontSize: '1rem' , display:'flex' , alignItems: 'center' }}>
                 Already have an account?
-                <Link
-                  href="/login"
-                  underline="hover"
-                  sx={{
-                    ml: 0.5,
-                  }}
-                >
-                  sign in
-                </Link>
+                <TextButton
+                  onClick={() => router.push('/login')}
+                  text="Login"
+                />
               </Typography>
             </Box>
         </Paper>
