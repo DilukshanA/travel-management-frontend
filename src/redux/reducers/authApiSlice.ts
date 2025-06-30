@@ -27,6 +27,17 @@ export const authApiSlice = createApi({
             }),
             invalidatesTags: ["Auth"]
         }),
+        loginWithEmailPassword: builder.mutation({
+            query: (idToken) => ({
+                url: "/api/auth/login",
+                method: "POST",
+                headers: {
+                    Authorization: `Bearer ${idToken}`,
+                    'Content-Type': 'application/json'
+                }
+            }),
+            invalidatesTags: ["Auth"]
+        }),
         getUserData: builder.query<any, void>({
             // Fetch user data with cookie
             query: () => ({
@@ -54,6 +65,7 @@ export const authApiSlice = createApi({
 export const { 
     useSignUpWithEmailPasswordMutation,
     useSignUpwithGoogleMutation,
+    useLoginWithEmailPasswordMutation,
     useGetUserDataQuery,
     useUpdateUserDataMutation
 } = authApiSlice;

@@ -13,6 +13,8 @@ export const getErrorMessage = (errorCode: FirebaseAuthErrorCode): string => {
         return 'This email is already registered. Please log in or use a different email.';
       case 'auth/invalid-email':
         return 'Please enter a valid email address.';
+      case 'auth/invalid-credential':
+        return 'Invalid Email or Password. Please try again.';
       case 'auth/weak-password':
         return 'Password is too weak. Please use at least 6 characters.';
       case 'auth/operation-not-allowed':
