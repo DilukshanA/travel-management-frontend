@@ -1,24 +1,55 @@
+"use client"
 import { Box, Button, Checkbox, FormControlLabel, TextField, Typography } from '@mui/material'
 import React from 'react'
 import TextButton from '../ui/TextButton'
 import { useFormik } from 'formik'
 import { signInValidate } from '@/forms/login/validation'
 import { signInInitialValues } from '@/forms/login/initialValues'
-import { signInWithEmailAndPassword } from 'firebase/auth'
+import { AuthError, signInWithEmailAndPassword } from 'firebase/auth'
 import { auth } from '../../../lib/firebaseConfig'
+import { useLoginWithEmailPasswordMutation } from '@/redux/reducers/authApiSlice'
+import LoadingBackdrop from '../ui/LoadingBackdrop'
+import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
+import { getErrorMessage } from '../../../lib/authentication/authExceptions'
 
 const LoginForm = () => {
 
+  const [ loginWithEmailPassword, { isLoading, isSuccess, isError, error } ] = useLoginWithEmailPasswordMutation();
+
+  const router = useRouter();
+
   const handleLogin = async () => {
-    console.log('Login form submitted:', formik.values.email);
+
     try {
       if (!formik.values.email || !formik.values.password) {
         throw new Error('Email and password are required.');
       }
       const userCredential = await signInWithEmailAndPassword(auth, formik.values.email, formik.values.password );
       console.log('User logged in successfully:', userCredential.user);
-    } catch (error) {
-      console.log('Login error:', error);
+
+      // get ID token
+      const idToken = await userCredential.user.getIdToken();
+
+      const result = await loginWithEmailPassword(idToken).unwrap();
+      console.log('Login Result:', result);
+      toast.success("Hi, " + result.user.firstName + "! You have logged in successfully.");
+
+    } catch (err : any) {
+      // when server is not running or connection refused
+      if (err?.originalStatus === 404) {
+        toast.error('Server problem occurred !')
+      }
+      // Internal Server Error
+      else if (err?.originalStatus === 500) {
+        toast.error('Internal server error !')
+      }
+      // firebase auth error handling
+      else if (err as AuthError) {
+        const authError = err as AuthError;
+        const errorMessage = getErrorMessage(authError.code);
+        toast.error(errorMessage);
+      }
     }
   }
 
@@ -31,6 +62,7 @@ const LoginForm = () => {
     <Box component="form" onSubmit={formik.handleSubmit} sx={{
       mt: 4,
       }}>
+        <LoadingBackdrop open={isLoading || isSuccess} />
 
       <Box sx={{
         display: 'flex',
