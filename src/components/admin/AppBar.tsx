@@ -40,7 +40,7 @@ export default function AppBar({
   ...rest
 }: CustomAppBarProps) {
   return (
-    <StyledAppBar position="fixed" open={open} drawerWidth={drawerWidth} {...rest}>
+    <StyledAppBar position="fixed" open={open} drawerWidth={drawerWidth} color='inherit' elevation={1} {...rest}>
       <Toolbar>
         {!open && (
           <IconButton
