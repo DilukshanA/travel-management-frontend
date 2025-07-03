@@ -111,6 +111,43 @@ const SidebarMenuList: React.FC = () => {
         },
       ],
     },
+    {
+        id: 'travel-ride',
+        label: 'Travel Ride',
+        icon: <PersonOutline />,
+        children: [
+            {
+                id: 'create-ride',
+                label: 'Create Ride',
+                onClick: () => console.log('Create Ride clicked'),
+            }
+        ]
+
+    },
+    {
+        id: 'users',
+        label: 'Users',
+        icon: <Person />,
+        children: [
+            {
+                id: 'passenger',
+                label: 'Passengers',
+            },
+            {
+                id: 'driver',
+                label: 'Drivers',
+            },
+            {
+                id: 'assistant',
+                label: 'Assistants',
+            }
+        ]
+    },
+    {
+        id: 'vehicles',
+        label: 'Vehicles',
+        icon: <Inventory />,
+    }
   ];
 
   const handleItemClick = (item: MenuItem) => {
