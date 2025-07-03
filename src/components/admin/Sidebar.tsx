@@ -15,8 +15,10 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { useTheme } from '@mui/material/styles';
 import { Avatar, Box, Typography } from '@mui/material';
+import NestedList from '../ui/NestedList';
+import SidebarMenuList from './SidebarMenuList';
 
-export const drawerWidth = 240;
+export const drawerWidth = 280;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,
@@ -108,7 +110,8 @@ export default function Sidebar({ open, onDrawerClose }: SidebarProps) {
         ))}
       </List>
       <Divider />
-      <Typography variant="h6" component='h2' sx={{ p: 2 , fontSize: '1rem'}}>Saved reports</Typography>
+      <Typography variant="h6" component='h2' sx={{ p: 2 , fontSize: '1rem'}}>Travel Rides</Typography>
+      <SidebarMenuList/>
       {/* <List>
         {['All mail', 'Trash', 'Spam'].map((text, index) => (
           <ListItem key={text} disablePadding sx={{ display: 'block' }}>
