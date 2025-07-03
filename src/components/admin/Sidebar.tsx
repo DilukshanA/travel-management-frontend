@@ -14,6 +14,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { useTheme } from '@mui/material/styles';
+import { Box } from '@mui/material';
 
 export const drawerWidth = 240;
 
@@ -74,7 +75,21 @@ export default function Sidebar({ open, onDrawerClose }: SidebarProps) {
 
   return (
     <Drawer variant="permanent" open={open}>
-      <DrawerHeader>
+      <DrawerHeader
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: theme.spacing(0, 1),
+        }}
+      >
+        <Box
+          component="img"
+          src="/assets/autonix_logo.png"
+          alt="Autonix Logo"
+          height={30}
+          sx={{ marginLeft: theme.spacing(1) }}
+        />
         <IconButton onClick={onDrawerClose}>
           {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
         </IconButton>
