@@ -14,7 +14,7 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { useTheme } from '@mui/material/styles';
-import { Box } from '@mui/material';
+import { Avatar, Box, Typography } from '@mui/material';
 
 export const drawerWidth = 240;
 
@@ -108,7 +108,8 @@ export default function Sidebar({ open, onDrawerClose }: SidebarProps) {
         ))}
       </List>
       <Divider />
-      <List>
+      <Typography variant="h6" component='h2' sx={{ p: 2 , fontSize: '1rem'}}>Saved reports</Typography>
+      {/* <List>
         {['All mail', 'Trash', 'Spam'].map((text, index) => (
           <ListItem key={text} disablePadding sx={{ display: 'block' }}>
             <ListItemButton sx={{ minHeight: 48, justifyContent: open ? 'initial' : 'center', px: 2.5 }}>
@@ -119,7 +120,38 @@ export default function Sidebar({ open, onDrawerClose }: SidebarProps) {
             </ListItemButton>
           </ListItem>
         ))}
-      </List>
+      </List> */}
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'flex-start',
+          padding: theme.spacing(2),
+          gap: theme.spacing(2),
+          backgroundColor: theme.palette.background.default,
+          mt: 'auto',
+        }}
+      >
+        <Box
+          sx={{
+            width: 40,
+            height: 40,
+            borderRadius: '50%',
+            overflow: 'hidden',
+            boxShadow: theme.shadows[1],
+          }}
+        >
+          <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+        </Box>
+        <Box sx={{ opacity: open ? 1 : 0 }}>
+          <Box sx={{ fontWeight: 'bold', fontSize: '1rem' }}>
+            John Doe
+          </Box>
+          <Box sx={{ fontSize: '0.875rem', color: theme.palette.text.secondary }}>
+            Admin
+          </Box>
+        </Box>
+      </Box>
     </Drawer>
   );
 }
