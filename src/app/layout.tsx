@@ -6,6 +6,7 @@ import { Toaster } from 'react-hot-toast';
 import { AppRouterCacheProvider } from '@mui/material-nextjs/v15-appRouter';
 import ReduxProvider from "../../lib/Provider";
 import { ColorModeProvider } from "@/theme/ThemeContext";
+import { CssBaseline } from "@mui/material";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ColorModeProvider>
+          <CssBaseline />
           <ReduxProvider>
             <AppRouterCacheProvider options={{ enableCssLayer: true }}>
               <ThemeRegistry>
