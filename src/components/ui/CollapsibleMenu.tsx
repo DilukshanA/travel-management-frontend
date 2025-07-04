@@ -71,15 +71,17 @@ const CollapsibleMenu: React.FC<CollapsibleMenuProps> = ({
           disablePadding
           sx={{
             pl: depth * 2,
+            mt: 0.25,
           }}
         >
           <ListItemButton
             onClick={() => handleItemClick(item)}
             selected={isSelected}
             sx={{
-              minHeight: 48,
-              borderRadius: 1,
-              mb: 0.5,
+              minHeight: 36,
+              borderRadius: 3,
+              py:0,
+              // mb: 0.5,
               backgroundColor: isSelected ? '#e3f2fd' : 'transparent',
               '&:hover': {
                 backgroundColor: isSelected ? '#e3f2fd' : '#f5f5f5',
@@ -92,11 +94,13 @@ const CollapsibleMenu: React.FC<CollapsibleMenuProps> = ({
               },
             }}
           >
-            {item.icon && (
-              <Box sx={{ mr: 2, color: '#666', fontSize: 20 }}>
-                {item.icon}
-              </Box>
-            )}
+          {item.icon && React.isValidElement(item.icon) ? (
+            <Box sx={{ mr: 2, color: '#666', display: 'flex', alignItems: 'center' }}>
+              {React.cloneElement(item.icon as React.ReactElement<any>, {
+                sx: { fontSize: 18 }, // You can change this value to any px size
+              })}
+            </Box>
+          ) : null}
             <ListItemText
               primary={
                 <Box display="flex" alignItems="center" gap={1}>
@@ -105,6 +109,7 @@ const CollapsibleMenu: React.FC<CollapsibleMenuProps> = ({
                     sx={{
                       color: isSelected ? '#1976d2' : '#333',
                       fontWeight: isSelected ? 500 : 400,
+                      fontSize: '14px',
                     }}
                   >
                     {item.label}
@@ -115,8 +120,8 @@ const CollapsibleMenu: React.FC<CollapsibleMenuProps> = ({
                         backgroundColor: '#ff9800',
                         color: 'white',
                         borderRadius: '50%',
-                        width: 16,
-                        height: 16,
+                        width: 12,
+                        height: 12,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -131,8 +136,18 @@ const CollapsibleMenu: React.FC<CollapsibleMenuProps> = ({
               }
             />
             {hasChildren && (
-              <IconButton size="small" sx={{ color: '#666' }}>
-                {isOpen ? <ExpandLess /> : <ExpandMore />}
+              <IconButton
+                size="small"
+                sx={{
+                  color: '#666',
+                  p: 0.25,
+                }}
+              >
+                {isOpen ? (
+                  <ExpandLess sx={{ fontSize: 14 }} />
+                ) : (
+                  <ExpandMore sx={{ fontSize: 14 }} />
+                )}
               </IconButton>
             )}
           </ListItemButton>

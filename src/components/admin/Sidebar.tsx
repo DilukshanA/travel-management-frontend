@@ -96,8 +96,8 @@ export default function Sidebar({ open, onDrawerClose }: SidebarProps) {
           {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
         </IconButton>
       </DrawerHeader>
-      <Divider />
-      <List>
+
+      {/* <List>
         {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
           <ListItem key={text} disablePadding sx={{ display: 'block' }}>
             <ListItemButton sx={{ minHeight: 48, justifyContent: open ? 'initial' : 'center', px: 2.5 }}>
@@ -108,22 +108,9 @@ export default function Sidebar({ open, onDrawerClose }: SidebarProps) {
             </ListItemButton>
           </ListItem>
         ))}
-      </List>
-      <Divider />
+      </List> */}
       <Typography variant="h6" component='h2' sx={{ p: 2 , fontSize: '1rem'}}>Travel Rides</Typography>
       <SidebarMenuList/>
-      {/* <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding sx={{ display: 'block' }}>
-            <ListItemButton sx={{ minHeight: 48, justifyContent: open ? 'initial' : 'center', px: 2.5 }}>
-              <ListItemIcon sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center' }}>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} sx={{ opacity: open ? 1 : 0 }} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List> */}
       <Box
         sx={{
           display: 'flex',

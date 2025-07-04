@@ -132,6 +132,7 @@ const SidebarMenuList: React.FC = () => {
             {
                 id: 'passenger',
                 label: 'Passengers',
+                badge: '●',
             },
             {
                 id: 'driver',
