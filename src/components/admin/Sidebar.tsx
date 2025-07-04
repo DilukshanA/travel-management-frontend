@@ -109,8 +109,9 @@ export default function Sidebar({ open, onDrawerClose }: SidebarProps) {
           </ListItem>
         ))}
       </List> */}
+      
       <Typography variant="h6" component='h2' sx={{ p: 2 , fontSize: '1rem'}}>Travel Rides</Typography>
-      <SidebarMenuList/>
+      <SidebarMenuList open={open}/>
       <Box
         sx={{
           display: 'flex',
