@@ -114,7 +114,9 @@ const CollapsibleMenu: React.FC<CollapsibleMenuProps> = ({
                   <Typography
                     variant="body2"
                     sx={(theme) => ({
-                      color: isSelected ? (theme.palette.mode === 'light' ? '#1976d2' : '#1976d2') : (theme.palette.mode === 'light' ? '#333' : '#ededed'),
+                      color: isSelected ? (theme.palette.mode === 'light' ? '#1976d2' : '#1976d2') 
+                      : depth === 0 ? (theme.palette.mode === 'light' ? '#333' : '#ededed')
+                      : (theme.palette.mode === 'light' ? '#666' : '#c2c2c2'),
                       fontWeight: isSelected ? 500 : 400,
                       fontSize: '14px',
                     })}
@@ -161,7 +163,7 @@ const CollapsibleMenu: React.FC<CollapsibleMenuProps> = ({
         {hasChildren && (
           <Collapse in={isOpen} timeout="auto" unmountOnExit>
             <List component="div" disablePadding>
-              {item.children!.map((child) => renderMenuItem(child, depth + 1))}
+              {item.children!.map((child) => renderMenuItem(child, depth + 1.5))}
             </List>
           </Collapse>
         )}
