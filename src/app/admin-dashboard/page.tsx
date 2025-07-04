@@ -18,10 +18,17 @@ export default function MiniDrawer() {
       <Sidebar open={open} onDrawerClose={handleDrawerClose} />
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
-        <Typography paragraph>
+        <Typography paragraph
+        color='text.secondary'
+        >
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod...
         </Typography>
-        <Typography paragraph>
+        <Typography
+        sx={(theme) => ({
+          color: theme.palette.text.secondary,
+          ...theme.typography.h1,
+        })}
+         paragraph>
           Consequat mauris nunc congue nisi vitae suscipit. Fringilla est...
         </Typography>
       </Box>
