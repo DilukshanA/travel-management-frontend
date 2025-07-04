@@ -18,7 +18,7 @@ import { Avatar, Box, Typography } from '@mui/material';
 import NestedList from '../ui/NestedList';
 import SidebarMenuList from './SidebarMenuList';
 
-export const drawerWidth = 280;
+export const drawerWidth = 300;
 
 const openedMixin = (theme: Theme): CSSObject => ({
   width: drawerWidth,

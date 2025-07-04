@@ -8,6 +8,7 @@ import {
   Box,
   Typography,
   IconButton,
+  alpha,
 } from '@mui/material';
 import {
   ExpandLess,
@@ -77,22 +78,22 @@ const CollapsibleMenu: React.FC<CollapsibleMenuProps> = ({
           <ListItemButton
             onClick={() => handleItemClick(item)}
             selected={isSelected}
-            sx={{
+            sx={(theme) => ({
               minHeight: 36,
               borderRadius: 3,
               py:0,
               // mb: 0.5,
-              backgroundColor: isSelected ? '#e3f2fd' : 'transparent',
+              backgroundColor: isSelected ? (theme.palette.mode === 'light' ? '#e3f2fd' : '#0d47a1') : 'transparent',
               '&:hover': {
                 backgroundColor: isSelected ? '#e3f2fd' : '#f5f5f5',
               },
               '&.Mui-selected': {
-                backgroundColor: '#e3f2fd',
+                backgroundColor: isSelected ? (theme.palette.mode === 'light' ? '#e3f2fd' : alpha('#0d47a1', 0.3)) : 'transparent',
                 '&:hover': {
                   backgroundColor: '#e3f2fd',
                 },
               },
-            }}
+            })}
           >
             {/* icon */}
           {item.icon && React.isValidElement(item.icon) ? (
@@ -109,11 +110,11 @@ const CollapsibleMenu: React.FC<CollapsibleMenuProps> = ({
                   {/* label */}
                   <Typography
                     variant="body2"
-                    sx={{
-                      color: isSelected ? '#1976d2' : '#333',
+                    sx={(theme) => ({
+                      color: isSelected ? (theme.palette.mode === 'light' ? '#1976d2' : '#1976d2') : (theme.palette.mode === 'light' ? '#333' : '#ededed'),
                       fontWeight: isSelected ? 500 : 400,
                       fontSize: '14px',
-                    }}
+                    })}
                   >
                     {item.label}
                   </Typography>
