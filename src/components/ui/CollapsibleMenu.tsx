@@ -85,19 +85,22 @@ const CollapsibleMenu: React.FC<CollapsibleMenuProps> = ({
               // mb: 0.5,
               backgroundColor: isSelected ? (theme.palette.mode === 'light' ? '#e3f2fd' : '#0d47a1') : 'transparent',
               '&:hover': {
-                backgroundColor: isSelected ? '#e3f2fd' : '#f5f5f5',
+                backgroundColor: isSelected ? (theme.palette.mode === 'light' ? '#e3f2fd' : '#b823ae') : (theme.palette.mode === 'light' ? '#e3f2fd' : alpha('#979797', 0.2)),
               },
               '&.Mui-selected': {
                 backgroundColor: isSelected ? (theme.palette.mode === 'light' ? '#e3f2fd' : alpha('#0d47a1', 0.3)) : 'transparent',
                 '&:hover': {
-                  backgroundColor: '#e3f2fd',
+                  backgroundColor: theme.palette.mode === 'light' ? '#e3f2fd' : alpha('#0d47a1', 0.4),
                 },
               },
             })}
           >
             {/* icon */}
           {item.icon && React.isValidElement(item.icon) ? (
-            <Box sx={{ mr: 2, color: isSelected ? '#1976d2' : '#666', display: 'flex', alignItems: 'center' }}>
+            <Box sx={(theme) => ({ 
+              mr: 2, display: 'flex', alignItems: 'center',
+              color: isSelected ? (theme.palette.mode === 'light' ? '#1976d2' : '#1976d2') : (theme.palette.mode === 'light' ? '#666' : '#979797'),  
+              })}>
               {React.cloneElement(item.icon as React.ReactElement<any>, {
                 sx: { fontSize: 18 }, // You can change this value to any px size
               })}
@@ -141,10 +144,10 @@ const CollapsibleMenu: React.FC<CollapsibleMenuProps> = ({
             {hasChildren && (
               <IconButton
                 size="small"
-                sx={{
-                  color: '#666',
+                sx={(theme) => ({
+                  color: theme.palette.mode === 'light' ? '#666' : '#979797',
                   p: 0.25,
-                }}
+                })}
               >
                 {isOpen ? (
                   <ExpandLess sx={{ fontSize: 14 }} />
