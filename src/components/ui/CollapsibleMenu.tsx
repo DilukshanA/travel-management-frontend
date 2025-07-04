@@ -116,7 +116,8 @@ const CollapsibleMenu: React.FC<CollapsibleMenuProps> = ({
                     sx={(theme) => ({
                       color: isSelected ? (theme.palette.mode === 'light' ? '#1976d2' : '#1976d2') 
                       : depth === 0 ? (theme.palette.mode === 'light' ? '#333' : '#ededed')
-                      : (theme.palette.mode === 'light' ? '#666' : '#c2c2c2'),
+                      : depth > 2 ? (theme.palette.mode === 'light' ? '#818181' : '#979797')
+                      : (theme.palette.mode === 'light' ? '#606060' : '#c2c2c2'),
                       fontWeight: isSelected ? 500 : 400,
                       fontSize: '14px',
                     })}
