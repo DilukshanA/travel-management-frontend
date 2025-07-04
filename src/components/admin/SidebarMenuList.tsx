@@ -150,7 +150,7 @@ const SidebarMenuList: React.FC = () => {
         id: 'vehicles',
         label: 'Vehicles',
         icon: <Inventory />,
-        badge: <FiberNewIcon color="primary" sx={{fontSize: '20px'}}/>,
+        badge: <FiberNewIcon color="success" sx={{fontSize: '20px'}}/>,
     }
   ];
 

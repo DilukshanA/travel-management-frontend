@@ -94,16 +94,19 @@ const CollapsibleMenu: React.FC<CollapsibleMenuProps> = ({
               },
             }}
           >
+            {/* icon */}
           {item.icon && React.isValidElement(item.icon) ? (
-            <Box sx={{ mr: 2, color: '#666', display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ mr: 2, color: isSelected ? '#1976d2' : '#666', display: 'flex', alignItems: 'center' }}>
               {React.cloneElement(item.icon as React.ReactElement<any>, {
                 sx: { fontSize: 18 }, // You can change this value to any px size
               })}
             </Box>
           ) : null}
+
             <ListItemText
               primary={
                 <Box display="flex" alignItems="center" gap={1}>
+                  {/* label */}
                   <Typography
                     variant="body2"
                     sx={{
@@ -114,6 +117,8 @@ const CollapsibleMenu: React.FC<CollapsibleMenuProps> = ({
                   >
                     {item.label}
                   </Typography>
+
+                  {/* badge */}
                   {item.badge && (
                     <Box
                       sx={{
