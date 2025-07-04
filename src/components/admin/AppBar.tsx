@@ -7,7 +7,8 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ThemeToggle from '../ThemeToggle';
-import { Box } from '@mui/material';
+import { Avatar, Box } from '@mui/material';
+import NotificationButton from '../ui/NotificationButton';
 
 export interface CustomAppBarProps extends MuiAppBarProps {
   open: boolean;
@@ -58,8 +59,12 @@ export default function AppBar({
         <Typography variant="h6" noWrap component="div">
           Mini variant drawer
         </Typography>
-        <Box sx={{ ml: 'auto' }}>
+        <Box display='flex'
+          sx={{ ml: 'auto', gap: 1 }}
+        >
             <ThemeToggle/>
+            <NotificationButton/>
+            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
         </Box>
       </Toolbar>
     </StyledAppBar>
