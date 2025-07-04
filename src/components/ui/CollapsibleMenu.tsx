@@ -27,7 +27,7 @@ interface MenuItem {
   id: string;
   label: string;
   icon?: React.ReactNode;
-  badge?: string | number;
+  badge?: React.ReactNode;
   children?: MenuItem[];
   onClick?: () => void;
 }
@@ -117,11 +117,8 @@ const CollapsibleMenu: React.FC<CollapsibleMenuProps> = ({
                   {item.badge && (
                     <Box
                       sx={{
-                        backgroundColor: '#ff9800',
-                        color: 'white',
-                        borderRadius: '50%',
-                        width: 12,
-                        height: 12,
+                        width: 14,
+                        height: 14,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',

@@ -21,14 +21,17 @@ import {
   Refresh,
   Description,
   PersonOutline,
+  CheckCircle,
 } from '@mui/icons-material';
 import CollapsibleMenu from '../ui/CollapsibleMenu';
+import CircleIcon from '@mui/icons-material/Circle';
+import FiberNewIcon from '@mui/icons-material/FiberNew';
 
 interface MenuItem {
   id: string;
   label: string;
   icon?: React.ReactNode;
-  badge?: string | number;
+  badge?: React.ReactNode;
   children?: MenuItem[];
   onClick?: () => void;
 }
@@ -42,12 +45,11 @@ const SidebarMenuList: React.FC = () => {
       id: 'ecommerce',
       label: 'E-commerce',
       icon: <ShoppingCart />,
-      badge: '●',
+      badge: <CircleIcon color="success" sx={{fontSize: '10px'}}/>,
       children: [
         {
           id: 'admin',
           label: 'Admin',
-          badge: '●',
           children: [
             {
               id: 'product-listing',
@@ -72,7 +74,7 @@ const SidebarMenuList: React.FC = () => {
             {
               id: 'create-order',
               label: 'Create order',
-              badge: 'New',
+              badge: <CircleIcon color="success" sx={{fontSize: '10px'}}/>,
               onClick: () => console.log('Create order clicked'),
             },
             {
@@ -132,7 +134,7 @@ const SidebarMenuList: React.FC = () => {
             {
                 id: 'passenger',
                 label: 'Passengers',
-                badge: '●',
+                badge: <CircleIcon color="success" sx={{fontSize: '10px'}}/>,
             },
             {
                 id: 'driver',
@@ -148,6 +150,7 @@ const SidebarMenuList: React.FC = () => {
         id: 'vehicles',
         label: 'Vehicles',
         icon: <Inventory />,
+        badge: <FiberNewIcon color="primary" sx={{fontSize: '20px'}}/>,
     }
   ];
 
