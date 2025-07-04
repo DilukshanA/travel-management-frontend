@@ -87,7 +87,7 @@ export default function Sidebar({ open, onDrawerClose }: SidebarProps) {
       >
         <Box
           component="img"
-          src="/assets/autonix_logo.png"
+          src= { theme.palette.mode === 'light' ? '/assets/autonix_logo.png' : '/assets/autonix_logo_dark.png'}
           alt="Autonix Logo"
           height={30}
           sx={{ marginLeft: theme.spacing(1) }}
@@ -109,8 +109,6 @@ export default function Sidebar({ open, onDrawerClose }: SidebarProps) {
           </ListItem>
         ))}
       </List> */}
-      
-      <Typography variant="h6" component='h2' sx={{ p: 2 , fontSize: '1rem'}}>Travel Rides</Typography>
       <SidebarMenuList open={open}/>
       <Box
         sx={{

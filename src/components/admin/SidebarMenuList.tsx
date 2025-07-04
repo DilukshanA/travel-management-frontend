@@ -168,6 +168,15 @@ const SidebarMenuList: React.FC<CollapsibleMenuProps> = ({open}) => {
     <Box>
       {open && (
       <Box sx={{ p: 2 }}>
+        <Typography
+          variant="body2"
+          sx={(theme) => ({
+            ml: 2,
+            mb: 2,
+            color: theme.palette.mode === 'light' ? '#606060' : '#c2c2c2',
+          })}
+        >Menu
+      </Typography>
         <CollapsibleMenu
           items={menuItems}
           selectedItem={selectedItem}
