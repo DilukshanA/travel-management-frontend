@@ -8,6 +8,7 @@ import {
   Box,
   Typography,
   IconButton,
+  ListItemIcon,
 } from '@mui/material';
 import {
   ExpandLess,
@@ -36,8 +37,12 @@ interface MenuItem {
   onClick?: () => void;
 }
 
+type CollapsibleMenuProps = {
+  open?: boolean;
+}
+
 // Example usage component
-const SidebarMenuList: React.FC = () => {
+const SidebarMenuList: React.FC<CollapsibleMenuProps> = ({open}) => {
   const [selectedItem, setSelectedItem] = useState<string>('product-list');
 
   const menuItems: MenuItem[] = [
@@ -160,12 +165,29 @@ const SidebarMenuList: React.FC = () => {
   };
 
   return (
-    <Box sx={{ p: 2 }}>
-      <CollapsibleMenu
-        items={menuItems}
-        selectedItem={selectedItem}
-        onItemClick={handleItemClick}
-      />
+    <Box>
+      {open && (
+      <Box sx={{ p: 2 }}>
+        <CollapsibleMenu
+          items={menuItems}
+          selectedItem={selectedItem}
+          onItemClick={handleItemClick}
+        />
+      </Box>
+      )}
+      {!open && (
+          <List>
+            {menuItems.map((item, index) => (
+            <ListItem key={index} disablePadding sx={{ display: 'block' }}>
+              <ListItemButton sx={{ minHeight: 48, justifyContent: open ? 'initial' : 'center', px: 2.5 }}>
+                <ListItemIcon sx={{ minWidth: 0, mr: open ? 3 : 'auto', justifyContent: 'center' }}>
+                  {item.icon}
+                </ListItemIcon>
+              </ListItemButton>
+            </ListItem>
+            ))}
+          </List>
+      )}
     </Box>
   );
 };
