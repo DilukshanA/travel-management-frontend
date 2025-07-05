@@ -15,13 +15,14 @@ export const useColorMode = () => useContext(ColorModeContext);
 
 export const ColorModeProvider = ({ children }: { children: React.ReactNode }) => {
   const [mode, setMode] = useState<'light' | 'dark'>('light');
+  const [mounted, setMounted] = useState(false);
 
-  // Load mode from localStorage on mount
   useEffect(() => {
     const storedMode = localStorage.getItem('themeMode');
     if (storedMode === 'dark' || storedMode === 'light') {
       setMode(storedMode);
     }
+    setMounted(true);
   }, []);
 
   const colorMode = useMemo(
@@ -38,6 +39,11 @@ export const ColorModeProvider = ({ children }: { children: React.ReactNode }) =
   );
 
   const theme = useMemo(() => getTheme(mode), [mode]);
+
+  //  Skip rendering children until the theme is loaded:
+  if (!mounted) {
+      return null; // or a loader/spinner
+  }
 
   return (
     <ColorModeContext.Provider value={colorMode}>
