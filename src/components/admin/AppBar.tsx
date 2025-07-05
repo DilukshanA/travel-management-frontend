@@ -7,8 +7,11 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import ThemeToggle from '../ThemeToggle';
-import { Avatar, Box } from '@mui/material';
+import { Avatar, Box, Button } from '@mui/material';
 import NotificationButton from '../ui/NotificationButton';
+import PersonIcon from '@mui/icons-material/Person';
+import { useRouter } from 'next/navigation';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
 export interface CustomAppBarProps extends MuiAppBarProps {
   open: boolean;
@@ -42,6 +45,8 @@ export default function AppBar({
   drawerWidth,
   ...rest
 }: CustomAppBarProps) {
+
+  const router = useRouter();
   return (
     <StyledAppBar position="fixed" open={open} drawerWidth={drawerWidth} color='inherit' elevation={1} {...rest}>
       <Toolbar>
@@ -64,7 +69,18 @@ export default function AppBar({
         >
             <ThemeToggle/>
             <NotificationButton/>
-            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+
+            <Button
+              variant='contained'
+              size='small'
+              endIcon={<KeyboardDoubleArrowRightIcon/>}
+              disableElevation
+            >
+              Login
+            </Button>
+
+            <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" 
+            />
         </Box>
       </Toolbar>
     </StyledAppBar>
