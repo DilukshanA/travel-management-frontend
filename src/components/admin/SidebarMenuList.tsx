@@ -27,6 +27,7 @@ import {
 import CollapsibleMenu from '../ui/CollapsibleMenu';
 import CircleIcon from '@mui/icons-material/Circle';
 import FiberNewIcon from '@mui/icons-material/FiberNew';
+import HomeIcon from '@mui/icons-material/Home';
 import { useRouter } from 'next/navigation';
 
 interface MenuItem {
@@ -49,6 +50,12 @@ const SidebarMenuList: React.FC<CollapsibleMenuProps> = ({open}) => {
   const router = useRouter();
 
   const menuItems: MenuItem[] = [
+    {
+      id: 'home',
+      label: 'Home',
+      icon: <HomeIcon/>,
+      onClick: () => router.push('/admin-dashboard'),
+    },
     {
         id: 'travel-ride',
         label: 'Travel Ride',
@@ -91,6 +98,7 @@ const SidebarMenuList: React.FC<CollapsibleMenuProps> = ({open}) => {
   ];
 
   const handleItemClick = (item: MenuItem) => {
+    setSelectedItem(item.id);
     item.onClick?.();
   };
 
