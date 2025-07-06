@@ -27,6 +27,7 @@ import {
 import CollapsibleMenu from '../ui/CollapsibleMenu';
 import CircleIcon from '@mui/icons-material/Circle';
 import FiberNewIcon from '@mui/icons-material/FiberNew';
+import { useRouter } from 'next/navigation';
 
 interface MenuItem {
   id: string;
@@ -45,79 +46,9 @@ type CollapsibleMenuProps = {
 const SidebarMenuList: React.FC<CollapsibleMenuProps> = ({open}) => {
   const [selectedItem, setSelectedItem] = useState<string>('product-list');
 
+  const router = useRouter();
+
   const menuItems: MenuItem[] = [
-    {
-      id: 'ecommerce',
-      label: 'E-commerce',
-      icon: <ShoppingCart />,
-      badge: <CircleIcon color="success" sx={{fontSize: '10px'}}/>,
-      children: [
-        {
-          id: 'admin',
-          label: 'Admin',
-          children: [
-            {
-              id: 'product-listing',
-              label: 'Product listing',
-              onClick: () => console.log('Product listing clicked'),
-            },
-            {
-              id: 'product-list',
-              label: 'Product list',
-              onClick: () => console.log('Product list clicked'),
-            },
-            {
-              id: 'order-list',
-              label: 'Order list',
-              onClick: () => console.log('Order list clicked'),
-            },
-            {
-              id: 'order',
-              label: 'Order',
-              onClick: () => console.log('Order clicked'),
-            },
-            {
-              id: 'create-order',
-              label: 'Create order',
-              badge: <CircleIcon color="success" sx={{fontSize: '10px'}}/>,
-              onClick: () => console.log('Create order clicked'),
-            },
-            {
-              id: 'refund',
-              label: 'Refund',
-              onClick: () => console.log('Refund clicked'),
-            },
-            {
-              id: 'invoice-list',
-              label: 'Invoice list',
-              onClick: () => console.log('Invoice list clicked'),
-            },
-            {
-              id: 'invoice',
-              label: 'Invoice',
-              onClick: () => console.log('Invoice clicked'),
-            },
-          ],
-        },
-        {
-          id: 'customer',
-          label: 'Customer',
-          icon: <PersonOutline />,
-          children: [
-            {
-              id: 'customer-list',
-              label: 'Customer list',
-              onClick: () => console.log('Customer list clicked'),
-            },
-            {
-              id: 'customer-details',
-              label: 'Customer details',
-              onClick: () => console.log('Customer details clicked'),
-            },
-          ],
-        },
-      ],
-    },
     {
         id: 'travel-ride',
         label: 'Travel Ride',
@@ -126,7 +57,7 @@ const SidebarMenuList: React.FC<CollapsibleMenuProps> = ({open}) => {
             {
                 id: 'create-ride',
                 label: 'Create Ride',
-                onClick: () => console.log('Create Ride clicked'),
+                onClick: () => router.push('/admin-dashboard/travel-ride/create-ride'),
             }
         ]
 
@@ -160,8 +91,7 @@ const SidebarMenuList: React.FC<CollapsibleMenuProps> = ({open}) => {
   ];
 
   const handleItemClick = (item: MenuItem) => {
-    setSelectedItem(item.id);
-    console.log('Selected item:', item.label);
+    item.onClick?.();
   };
 
   return (
