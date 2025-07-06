@@ -11,7 +11,6 @@ const RideForm = () => {
             alignItems: 'start',
             justifyContent: 'start',
             minHeight: '100vh',
-            backgroundColor: '#f5f5f5',
         }}>
             <Box sx={{
                 display: 'flex',
