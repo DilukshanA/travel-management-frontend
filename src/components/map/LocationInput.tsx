@@ -29,7 +29,7 @@ export default function LocationInput({ value, onChange, placeholder, label }: L
   const [searchResults, setSearchResults] = useState<SearchResult[]>([])
   const [showResults, setShowResults] = useState(false)
   const [isSearching, setIsSearching] = useState(false)
-  const searchTimeoutRef = useRef<NodeJS.Timeout>()
+  const searchTimeoutRef = useRef<NodeJS.Timeout>(null)
   const [showMapModal, setShowMapModal] = useState(false)
 
   useEffect(() => {
