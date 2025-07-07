@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import {
+  Autocomplete,
   Box,
   Button,
   Stack,
@@ -14,16 +15,32 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import type { Ride, Location } from "@/types/ride";
 import LocationInput from "./../../components/map/LocationInput";
+import { CheckboxAutocomplete } from "../ui/CheckboxAutocomplete";
 
 interface TripFormProps {
   onAddTrip: (trip: Ride) => void;
 }
+
+const driversList = [
+  { Name: 'The Shawshank Redemption', id: 1994 },
+  { Name: 'The Godfather', id: 1972 },
+  { Name: 'The Dark Knight', id: 2008 },
+  { Name: '12 Angry Men', id: 1957 },
+];
+const driversList2 = [
+  { Name: 'The Shawshank Redemption', id: 1994 },
+  { Name: 'The Godfather', id: 1972 },
+  { Name: 'The Dark Knight', id: 2008 },
+  { Name: '12 Angry Men', id: 1957 },
+];
 
 export default function TripForm({ onAddTrip }: TripFormProps) {
   const [distance, setDistance] = useState<number>(0);
   const [isCalculating, setIsCalculating] = useState(false);
   const [startLocation, setStartLocation] = useState<Location | null>(null);
   const [endLocation, setEndLocation] = useState<Location | null>(null);
+
+  const [selected, setSelected] = React.useState<typeof driversList>([]);
 
   const calculateDistance = async (start: Location, end: Location) => {
     setIsCalculating(true);
@@ -159,6 +176,42 @@ export default function TripForm({ onAddTrip }: TripFormProps) {
         placeholder={isCalculating ? "Calculating..." : "Distance will be calculated automatically"}
         fullWidth
       />
+
+      <CheckboxAutocomplete
+        label="Drivers"
+        placeholder="Select drivers"
+        options={driversList}
+        getOptionLabel={(option) => option.Name}
+        value={selected}
+        onChange={(e, newValue) => setSelected(newValue)}
+        width={400}
+      />
+
+      <CheckboxAutocomplete
+        label="Assistant"
+        placeholder="Select Assistant"
+        options={driversList}
+        getOptionLabel={(option) => option.Name}
+        value={selected}
+        onChange={(e, newValue) => setSelected(newValue)}
+        width={400}
+      />
+
+      {/* Vehicle selction */}
+      <Autocomplete
+        disablePortal
+        options={driversList2}
+        getOptionLabel={(option) => option.Name}
+        isOptionEqualToValue={(option, value) => option.id === value.id}
+        sx={{ width: 300 }}
+        renderInput={(params) => <TextField {...params} label="Vehicle" />}
+      />
+
+      { /* Date */}
+
+      {/* Time */}
+
+      
 
       <Button
         type="submit"
