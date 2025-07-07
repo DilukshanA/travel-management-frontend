@@ -42,9 +42,9 @@ export default function TripForm({ onAddTrip }: TripFormProps) {
   const [startLocation, setStartLocation] = useState<Location | null>(null);
   const [endLocation, setEndLocation] = useState<Location | null>(null);
 
-  const [selected, setSelected] = React.useState<typeof driversList>([]);
+  // const [selected, setSelected] = React.useState<typeof driversList>([]);
 
-  const [selectedDateTime, setSelectedDateTime] = React.useState<dayjs.Dayjs | null>(dayjs());
+  // const [selectedDateTime, setSelectedDateTime] = React.useState<dayjs.Dayjs | null>(dayjs());
 
 
   const calculateDistance = async (start: Location, end: Location) => {
@@ -125,11 +125,16 @@ const formik = useFormik({
 
     const newTrip: Ride = {
       id: Date.now().toString(),
-      name: values.tripName,
+      rideName: values.tripName,
       startLocation,
       endLocation,
       distance,
-      createdAt: new Date().toISOString(),
+      drivers: values.drivers.map((driver) => driver.Name),
+      assistants: values.assistants.map((assistant) => assistant.Name),
+      vehicle: values.vehicle?.Name || "",
+      startDateTime: values.startDateTime.toISOString(),
+      endDateTime: values.endDateTime.toISOString(),
+      totalSeats: values.seatsAvailable ? Number(values.seatsAvailable) : 0,
       // Add other fields as needed...
     };
 
