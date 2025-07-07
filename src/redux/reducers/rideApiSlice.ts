@@ -10,7 +10,7 @@ export const rideApiSlice = createApi({
     endpoints: (builder) => ({
         createRide : builder.mutation({
             query: (rideData) => ({
-                url: '/api/create-ride',
+                url: '/api/create-ride1',
                 method: 'POST',
                 body: rideData,
             }),
