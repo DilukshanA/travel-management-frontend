@@ -129,25 +129,23 @@ export default function TripForm({ onAddTrip }: TripFormProps) {
 
       <Box>
         <Stack direction="row" alignItems="center" spacing={1} mb={0.5}>
-          <MapPinIcon fontSize="small" />
-          <Typography variant="subtitle2">Start Location</Typography>
         </Stack>
         <LocationInput
           value={startLocation}
           onChange={handleStartLocationChange}
           placeholder="Enter start location"
+          label="Start Location"
         />
       </Box>
 
       <Box>
         <Stack direction="row" alignItems="center" spacing={1} mb={0.5}>
-          <NavigationIcon fontSize="small" />
-          <Typography variant="subtitle2">End Location</Typography>
         </Stack>
         <LocationInput
           value={endLocation}
           onChange={handleEndLocationChange}
           placeholder="Enter end location"
+          label="End Location"
         />
       </Box>
 
@@ -165,6 +163,7 @@ export default function TripForm({ onAddTrip }: TripFormProps) {
       <Button
         type="submit"
         variant="contained"
+        size="large"
         disabled={
           !formik.values.tripName ||
           !startLocation ||

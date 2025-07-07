@@ -8,12 +8,14 @@ import { useState, useEffect, useRef } from "react"
 import { MapPin, Search } from "lucide-react"
 import type { Location } from "./../../types/ride"
 import MapSelectionModal from "./MapSelectionModal"
-import { Button, TextField } from "@mui/material"
+import { Button, IconButton, InputAdornment, TextField, Tooltip } from "@mui/material"
+import LocationPinIcon from '@mui/icons-material/LocationPin';
 
 interface LocationInputProps {
   value: Location | null
   onChange: (location: Location | null) => void
-  placeholder: string
+  placeholder?: string
+  label?: string
 }
 
 interface SearchResult {
@@ -22,7 +24,7 @@ interface SearchResult {
   lon: string
 }
 
-export default function LocationInput({ value, onChange, placeholder }: LocationInputProps) {
+export default function LocationInput({ value, onChange, placeholder, label }: LocationInputProps) {
   const [inputValue, setInputValue] = useState("")
   const [searchResults, setSearchResults] = useState<SearchResult[]>([])
   const [showResults, setShowResults] = useState(false)
@@ -96,26 +98,30 @@ export default function LocationInput({ value, onChange, placeholder }: Location
     <div className="relative">
       <div className="flex gap-2">
         <div className="flex-1 relative">
-          {/* <Input
-            type="text"
-            value={inputValue}
-            onChange={handleInputChange}
-            placeholder={placeholder}
-            className="pr-10"
-          /> */}
           <TextField
             type="text"
+            label={label}
             value={inputValue}
             onChange={handleInputChange}
             placeholder={placeholder}
-            className="pr-10"
+            fullWidth
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <Search size={20} className="text-gray-500" />
+                </InputAdornment>
+              )
+            }}
           />
-
-          <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
         </div>
-        <Button onClick={handleMapSelect} title="Select from map">
-          <MapPin className="w-4 h-4" />
-        </Button>
+        {/* <Button onClick={handleMapSelect} title="Select from map">
+          <LocationPinIcon/>
+        </Button> */}
+        <Tooltip title="Select from map" arrow>
+          <IconButton size="small" onClick={handleMapSelect} sx={{ padding: 2}}>
+            <LocationPinIcon color="primary"/>
+          </IconButton>
+        </Tooltip>
       </div>
 
       {showResults && searchResults.length > 0 && (
@@ -150,7 +156,7 @@ export default function LocationInput({ value, onChange, placeholder }: Location
             setInputValue(location.name)
             setShowMapModal(false)
           }}
-          title={`Select ${placeholder.includes("start") ? "Start" : "End"} Location`}
+          title={`Select ${placeholder?.includes("start") ? "Start" : "End"} Location`}
         />
       )}
     </div>
