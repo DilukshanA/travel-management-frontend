@@ -94,33 +94,53 @@ export default function TripForm({ onAddTrip }: TripFormProps) {
     return R * c;
   };
 
-  const formik = useFormik({
-    initialValues: {
-      tripName: "",
-    },
-    validationSchema: Yup.object({
-      tripName: Yup.string().required("Trip name is required"),
-    }),
-    onSubmit: (values, { resetForm }) => {
-      if (!startLocation || !endLocation) {
-        alert("Please select start and end locations");
-        return;
-      }
-      const newTrip: Ride = {
-        id: Date.now().toString(),
-        name: values.tripName,
-        startLocation,
-        endLocation,
-        distance,
-        createdAt: new Date().toISOString(),
-      };
-      onAddTrip(newTrip);
-      resetForm();
-      setStartLocation(null);
-      setEndLocation(null);
-      setDistance(0);
-    },
-  });
+const formik = useFormik({
+  initialValues: {
+    tripName: "",
+    drivers: [] as typeof driversList,
+    assistants: [] as typeof driversList,
+    vehicle: null as (typeof driversList2)[number] | null,
+    startDateTime: dayjs(),
+    endDateTime: dayjs(),
+    seatsAvailable: "",
+  },
+  validationSchema: Yup.object({
+    tripName: Yup.string().required("Trip name is required"),
+    drivers: Yup.array().min(1, "At least one driver must be selected"),
+    assistants: Yup.array().min(1, "At least one assistant must be selected"),
+    vehicle: Yup.object().required("Vehicle is required"),
+    startDateTime: Yup.date().required("Start date & time is required"),
+    endDateTime: Yup.date()
+      .required("End date & time is required")
+      .min(Yup.ref("startDateTime"), "End time must be after start time"),
+    seatsAvailable: Yup.number()
+      .required("Seats are required")
+      .min(1, "At least one seat required"),
+  }),
+  onSubmit: (values, { resetForm }) => {
+    if (!startLocation || !endLocation) {
+      alert("Please select start and end locations");
+      return;
+    }
+
+    const newTrip: Ride = {
+      id: Date.now().toString(),
+      name: values.tripName,
+      startLocation,
+      endLocation,
+      distance,
+      createdAt: new Date().toISOString(),
+      // Add other fields as needed...
+    };
+
+    onAddTrip(newTrip);
+    resetForm();
+    setStartLocation(null);
+    setEndLocation(null);
+    setDistance(0);
+  },
+});
+
 
   const handleStartLocationChange = (loc: Location | null) => {
     setStartLocation(loc);
@@ -187,52 +207,72 @@ export default function TripForm({ onAddTrip }: TripFormProps) {
         placeholder="Select drivers"
         options={driversList}
         getOptionLabel={(option) => option.Name}
-        value={selected}
-        onChange={(e, newValue) => setSelected(newValue)}
+        value={formik.values.drivers}
+        onChange={(e, value) => formik.setFieldValue("drivers", value)}
         width={400}
       />
+
 
       <CheckboxAutocomplete
         label="Assistant"
         placeholder="Select Assistant"
         options={driversList}
         getOptionLabel={(option) => option.Name}
-        value={selected}
-        onChange={(e, newValue) => setSelected(newValue)}
+        value={formik.values.assistants}
+        onChange={(e, value) => formik.setFieldValue("assistants", value)}
         width={400}
       />
 
+
       {/* Vehicle selction */}
-      <Autocomplete
-        disablePortal
-        options={driversList2}
-        getOptionLabel={(option) => option.Name}
-        isOptionEqualToValue={(option, value) => option.id === value.id}
-        sx={{ width: 300 }}
-        renderInput={(params) => <TextField {...params} label="Vehicle" />}
-      />
+    <Autocomplete
+      disablePortal
+      options={driversList2}
+      getOptionLabel={(option) => option.Name}
+      isOptionEqualToValue={(option, value) => option.id === value.id}
+      sx={{ width: 300 }}
+      value={formik.values.vehicle}
+      onChange={(e, value) => formik.setFieldValue("vehicle", value)}
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          label="Vehicle"
+          error={formik.touched.vehicle && Boolean(formik.errors.vehicle)}
+          helperText={formik.touched.vehicle && (formik.errors.vehicle as string)}
+        />
+      )}
+    />
+
 
       { /* Date Time*/}
       <DatePicker
         label="Start Date & Time"
-        value={selectedDateTime}
-        onChange={(newValue) => setSelectedDateTime(newValue)}
+        value={formik.values.startDateTime}
+        onChange={(newValue) => formik.setFieldValue("startDateTime", newValue)}
         minDateTime={dayjs()}
       />
+
       <DatePicker
         label="End Date & Time"
-        value={selectedDateTime}
-        onChange={(newValue) => setSelectedDateTime(newValue)}
-        minDateTime={dayjs()}
+        value={formik.values.endDateTime}
+        onChange={(newValue) => formik.setFieldValue("endDateTime", newValue)}
+        minDateTime={formik.values.startDateTime}
       />
+
 
       {/* seats */}
       <TextField
         label="Total Seats"
         type="number"
         name="seatsAvailable"
+        value={formik.values.seatsAvailable}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.seatsAvailable && Boolean(formik.errors.seatsAvailable)}
+        helperText={formik.touched.seatsAvailable && formik.errors.seatsAvailable}
         fullWidth
       />
+
       
       <Button
         type="submit"
