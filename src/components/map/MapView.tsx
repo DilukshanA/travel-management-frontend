@@ -73,7 +73,7 @@ export default function MapView({ selectedTrip }: MapViewProps) {
         icon: startIcon,
       }).addTo(mapInstanceRef.current)
 
-      startMarker.bindPopup(`<b>Start:</b> ${selectedTrip.startLocation.name}`)
+      startMarker.bindPopup(`<b>Start:</b> ${selectedTrip.startLocation.address}`)
 
       // Add end marker (red)
       const endIcon = L.divIcon({
@@ -87,7 +87,7 @@ export default function MapView({ selectedTrip }: MapViewProps) {
         icon: endIcon,
       }).addTo(mapInstanceRef.current)
 
-      endMarker.bindPopup(`<b>End:</b> ${selectedTrip.endLocation.name}`)
+      endMarker.bindPopup(`<b>End:</b> ${selectedTrip.endLocation.address}`)
 
       // Try multiple routing services for better road-based routes
       let routeFound = false

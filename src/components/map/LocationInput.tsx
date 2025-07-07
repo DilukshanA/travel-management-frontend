@@ -34,7 +34,7 @@ export default function LocationInput({ value, onChange, placeholder, label }: L
 
   useEffect(() => {
     if (value) {
-      setInputValue(value.name)
+      setInputValue(value.address)
     }
   }, [value])
 
@@ -79,7 +79,7 @@ export default function LocationInput({ value, onChange, placeholder, label }: L
 
   const handleSelectLocation = (result: SearchResult) => {
     const location: Location = {
-      name: result.display_name,
+      address: result.display_name,
       lat: Number.parseFloat(result.lat),
       lng: Number.parseFloat(result.lon),
     }
@@ -153,7 +153,7 @@ export default function LocationInput({ value, onChange, placeholder, label }: L
           onClose={() => setShowMapModal(false)}
           onSelectLocation={(location) => {
             onChange(location)
-            setInputValue(location.name)
+            setInputValue(location.address)
             setShowMapModal(false)
           }}
           title={`Select ${placeholder?.includes("start") ? "Start" : "End"} Location`}

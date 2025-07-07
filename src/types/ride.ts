@@ -1,14 +1,19 @@
 export interface Location {
-  name: string
+  address: string
   lat: number
   lng: number
 }
 
 export interface Ride {
   id: string
-  name: string
+  rideName: string
   startLocation: Location
   endLocation: Location
   distance: number
-  createdAt: string
+  drivers: string[]
+  assistants: string[]
+  vehicle: string
+  startDateTime?: string
+  endDateTime?: string
+  totalSeats?: number
 }

@@ -68,7 +68,7 @@ export default function MapSelectionModal({ isOpen, onClose, onSelectLocation, t
               const locationName = data.display_name || `${lat.toFixed(6)}, ${lng.toFixed(6)}`
 
               const location: Location = {
-                name: locationName,
+                address: locationName,
                 lat,
                 lng,
               }
@@ -79,7 +79,7 @@ export default function MapSelectionModal({ isOpen, onClose, onSelectLocation, t
           } catch (error) {
             console.error("Error getting location name:", error)
             const location: Location = {
-              name: `${lat.toFixed(6)}, ${lng.toFixed(6)}`,
+              address: `${lat.toFixed(6)}, ${lng.toFixed(6)}`,
               lat,
               lng,
             }
@@ -152,7 +152,7 @@ export default function MapSelectionModal({ isOpen, onClose, onSelectLocation, t
               <MapPin className="w-4 h-4 mt-1 text-green-500 flex-shrink-0" />
               <div className="flex-1">
                 <p className="font-medium text-sm">Selected Location:</p>
-                <p className="text-sm text-gray-600 break-words">{selectedLocation.name}</p>
+                <p className="text-sm text-gray-600 break-words">{selectedLocation.address}</p>
                 <p className="text-xs text-gray-500 mt-1">
                   Coordinates: {selectedLocation.lat.toFixed(6)}, {selectedLocation.lng.toFixed(6)}
                 </p>
