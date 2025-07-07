@@ -16,6 +16,8 @@ import * as Yup from "yup";
 import type { Ride, Location } from "@/types/ride";
 import LocationInput from "./../../components/map/LocationInput";
 import { CheckboxAutocomplete } from "../ui/CheckboxAutocomplete";
+import DatePicker from "../ui/DateTimePicker";
+import dayjs from 'dayjs';
 
 interface TripFormProps {
   onAddTrip: (trip: Ride) => void;
@@ -41,6 +43,9 @@ export default function TripForm({ onAddTrip }: TripFormProps) {
   const [endLocation, setEndLocation] = useState<Location | null>(null);
 
   const [selected, setSelected] = React.useState<typeof driversList>([]);
+
+  const [selectedDateTime, setSelectedDateTime] = React.useState<dayjs.Dayjs | null>(dayjs());
+
 
   const calculateDistance = async (start: Location, end: Location) => {
     setIsCalculating(true);
@@ -131,7 +136,7 @@ export default function TripForm({ onAddTrip }: TripFormProps) {
     <Box
       component="form"
       onSubmit={formik.handleSubmit}
-      sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+      sx={{ display: "flex", flexDirection: "column", gap: 2, width: "100%", maxWidth: 600,}}
     >
       <TextField
         label="Ride Name"
@@ -207,12 +212,28 @@ export default function TripForm({ onAddTrip }: TripFormProps) {
         renderInput={(params) => <TextField {...params} label="Vehicle" />}
       />
 
-      { /* Date */}
+      { /* Date Time*/}
+      <DatePicker
+        label="Start Date & Time"
+        value={selectedDateTime}
+        onChange={(newValue) => setSelectedDateTime(newValue)}
+        minDateTime={dayjs()}
+      />
+      <DatePicker
+        label="End Date & Time"
+        value={selectedDateTime}
+        onChange={(newValue) => setSelectedDateTime(newValue)}
+        minDateTime={dayjs()}
+      />
 
-      {/* Time */}
-
+      {/* seats */}
+      <TextField
+        label="Total Seats"
+        type="number"
+        name="seatsAvailable"
+        fullWidth
+      />
       
-
       <Button
         type="submit"
         variant="contained"
