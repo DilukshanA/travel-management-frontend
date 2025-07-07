@@ -124,7 +124,7 @@ const formik = useFormik({
     }
 
     const newTrip: Ride = {
-      id: Date.now().toString(),
+      // id: Date.now().toString(),
       rideName: values.tripName,
       startLocation,
       endLocation,

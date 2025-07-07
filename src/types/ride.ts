@@ -5,7 +5,7 @@ export interface Location {
 }
 
 export interface Ride {
-  id: string
+  id?: string
   rideName: string
   startLocation: Location
   endLocation: Location
