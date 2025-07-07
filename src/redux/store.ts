@@ -2,18 +2,21 @@ import { configureStore } from "@reduxjs/toolkit";
 import { authApiSlice } from "./reducers/authApiSlice";
 import { otpApiSlice } from "./reducers/otpApiSlice";
 import { userSlice } from "./reducers/userSlice";
+import { rideApiSlice } from "./reducers/rideApiSlice";
 
 const store = configureStore({
     reducer: {
         userSlice: userSlice.reducer,
         [authApiSlice.reducerPath] : authApiSlice.reducer,
         [otpApiSlice.reducerPath] : otpApiSlice.reducer,
+        [rideApiSlice.reducerPath] : rideApiSlice.reducer,
     },
     // Adding the api middleware enables caching, invalidation, polling and other features of RTK Query
     middleware: (getDefaultMiddleware) => {
         return getDefaultMiddleware().concat(
             authApiSlice.middleware,
             otpApiSlice.middleware,
+            rideApiSlice.middleware
         );
     }
 })
