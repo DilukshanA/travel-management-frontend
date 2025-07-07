@@ -1,54 +1,179 @@
-import { Box, Button, IconButton, TextField } from '@mui/material'
-import React from 'react'
-import LocationPinIcon from '@mui/icons-material/LocationPin';
+"use client";
 
-const RideForm = () => {
-  return (
-    <div>
-        <Box component='form' sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'start',
-            justifyContent: 'start',
-            minHeight: '100vh',
-        }}>
-            <Box sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 2,
-                width: '100%',
-                maxWidth: 600,
-            }}>
-            <TextField id='ride-name' label='Ride Name' variant='outlined'
-                size='medium' name='ride-name'
-            />
-            <Box display='flex' sx={{gap: 2}}>
-                <TextField id='start-location' label='Start Location' variant='outlined'
-                    size='medium' name='start-location' fullWidth
-                />
-                <IconButton aria-label='start-location' size='large'>
-                    < LocationPinIcon/>
-                </IconButton>
-            </Box>
-            <Box  display='flex' sx={{gap: 2}}>
-                <TextField id='end-location' label='End Location' variant='outlined'
-                    size='medium' name='end-location' fullWidth
-                />
-                <IconButton aria-label='start-location' size='large'>
-                    < LocationPinIcon/>
-                </IconButton>
-            </Box>
-            <TextField id='distance' label='Distance in KM' variant='outlined' 
-                size='medium' name='distance'
-            />
-            </Box>
-            <Button variant='contained' disableElevation size='large' sx={{mt: 4}}
-            >
-                Create Ride
-            </Button>
-        </Box>
-    </div>
-  )
+import React, { useState } from "react";
+import {
+  Box,
+  Button,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
+import MapPinIcon from "@mui/icons-material/LocationOn";
+import NavigationIcon from "@mui/icons-material/Navigation";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import type { Ride, Location } from "@/types/ride";
+import LocationInput from "./../../components/map/LocationInput";
+
+interface TripFormProps {
+  onAddTrip: (trip: Ride) => void;
 }
 
-export default RideForm
+export default function TripForm({ onAddTrip }: TripFormProps) {
+  const [distance, setDistance] = useState<number>(0);
+  const [isCalculating, setIsCalculating] = useState(false);
+  const [startLocation, setStartLocation] = useState<Location | null>(null);
+  const [endLocation, setEndLocation] = useState<Location | null>(null);
+
+  const calculateDistance = async (start: Location, end: Location) => {
+    setIsCalculating(true);
+    try {
+      let response = await fetch(
+        `https://api.openrouteservice.org/v2/directions/driving-car?api_key=5b3ce3597851110001cf6248d5c5c8a8a4e64b8bb5c5c8a8a4e64b8b&start=${start.lng},${start.lat}&end=${end.lng},${end.lat}`
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        const distanceInKm = Math.round(
+          data.features[0].properties.segments[0].distance / 1000
+        );
+        setDistance(distanceInKm);
+      } else {
+        response = await fetch(
+          `https://router.project-osrm.org/route/v1/driving/${start.lng},${start.lat};${end.lng},${end.lat}?overview=false`
+        );
+        if (response.ok) {
+          const data = await response.json();
+          const distanceInKm = Math.round(data.routes[0].distance / 1000);
+          setDistance(distanceInKm);
+        } else {
+          const straight = calculateStraightLineDistance(start, end);
+          setDistance(Math.round(straight * 1.3));
+        }
+      }
+    } catch {
+      const straight = calculateStraightLineDistance(start, end);
+      setDistance(Math.round(straight * 1.3));
+    }
+    setIsCalculating(false);
+  };
+
+  const calculateStraightLineDistance = (start: Location, end: Location): number => {
+    const R = 6371;
+    const dLat = ((end.lat - start.lat) * Math.PI) / 180;
+    const dLon = ((end.lng - start.lng) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((start.lat * Math.PI) / 180) *
+        Math.cos((end.lat * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return R * c;
+  };
+
+  const formik = useFormik({
+    initialValues: {
+      tripName: "",
+    },
+    validationSchema: Yup.object({
+      tripName: Yup.string().required("Trip name is required"),
+    }),
+    onSubmit: (values, { resetForm }) => {
+      if (!startLocation || !endLocation) {
+        alert("Please select start and end locations");
+        return;
+      }
+      const newTrip: Ride = {
+        id: Date.now().toString(),
+        name: values.tripName,
+        startLocation,
+        endLocation,
+        distance,
+        createdAt: new Date().toISOString(),
+      };
+      onAddTrip(newTrip);
+      resetForm();
+      setStartLocation(null);
+      setEndLocation(null);
+      setDistance(0);
+    },
+  });
+
+  const handleStartLocationChange = (loc: Location | null) => {
+    setStartLocation(loc);
+    if (loc && endLocation) calculateDistance(loc, endLocation);
+  };
+
+  const handleEndLocationChange = (loc: Location | null) => {
+    setEndLocation(loc);
+    if (startLocation && loc) calculateDistance(startLocation, loc);
+  };
+
+  return (
+    <Box
+      component="form"
+      onSubmit={formik.handleSubmit}
+      sx={{ display: "flex", flexDirection: "column", gap: 2 }}
+    >
+      <TextField
+        label="Ride Name"
+        name="tripName"
+        value={formik.values.tripName}
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        error={formik.touched.tripName && Boolean(formik.errors.tripName)}
+        helperText={formik.touched.tripName && formik.errors.tripName}
+        fullWidth
+      />
+
+      <Box>
+        <Stack direction="row" alignItems="center" spacing={1} mb={0.5}>
+          <MapPinIcon fontSize="small" />
+          <Typography variant="subtitle2">Start Location</Typography>
+        </Stack>
+        <LocationInput
+          value={startLocation}
+          onChange={handleStartLocationChange}
+          placeholder="Enter start location"
+        />
+      </Box>
+
+      <Box>
+        <Stack direction="row" alignItems="center" spacing={1} mb={0.5}>
+          <NavigationIcon fontSize="small" />
+          <Typography variant="subtitle2">End Location</Typography>
+        </Stack>
+        <LocationInput
+          value={endLocation}
+          onChange={handleEndLocationChange}
+          placeholder="Enter end location"
+        />
+      </Box>
+
+      <TextField
+        label="Allocated Distance (km)"
+        type="number"
+        value={isCalculating ? "" : distance}
+        InputProps={{
+          readOnly: true,
+        }}
+        placeholder={isCalculating ? "Calculating..." : "Distance will be calculated automatically"}
+        fullWidth
+      />
+
+      <Button
+        type="submit"
+        variant="contained"
+        disabled={
+          !formik.values.tripName ||
+          !startLocation ||
+          !endLocation ||
+          isCalculating
+        }
+      >
+        {isCalculating ? "Calculating Distance..." : "Add Trip"}
+      </Button>
+    </Box>
+  );
+}
