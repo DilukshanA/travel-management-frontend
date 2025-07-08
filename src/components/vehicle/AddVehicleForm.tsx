@@ -2,10 +2,19 @@
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material'
 import React from 'react'
 import BasicSelectField from '../ui/BasicSelectField'
+import ImageUploadField from '../ui/ImageUploadField'
 
 const AddVehicleForm = () => {
+    const [ vehicleImage, setVehicleImage ] = React.useState<File | null>(null);
   return (
     <Box component='form' sx={{ width: '100%', maxWidth: 600, margin: 'auto', padding: 2 }}>
+        <Box>
+            <ImageUploadField
+                id='vehicle-logo'
+                value={vehicleImage}
+                onChange={(file) => setVehicleImage(file)}
+            />
+        </Box>
         <Box display='flex' gap={2}>
             <TextField
                 label="Vehicle Name"
