@@ -99,6 +99,18 @@ const SidebarMenuList: React.FC<CollapsibleMenuProps> = ({open}) => {
         label: 'Vehicles',
         icon: <Inventory />,
         badge: <FiberNewIcon color="success" sx={{fontSize: '20px'}}/>,
+        children: [
+          {
+            id: 'add-vehicle',
+            label: 'Add Vehicle',
+            onClick: () => router.push('/admin-dashboard/vehicles/add-vehicle'),
+          },
+          {
+            id: 'vehicle-list',
+            label: 'Vehicle List',
+            onClick: () => router.push('/admin-dashboard/vehicles/vehicle-list'),
+          }
+        ]
     }
   ];
 
