@@ -1,8 +1,11 @@
+import AddVehicleForm from '@/components/vehicle/AddVehicleForm'
 import React from 'react'
 
 const page = () => {
   return (
-    <div>add vehicle</div>
+    <div>
+        <AddVehicleForm/>
+    </div>
   )
 }
 

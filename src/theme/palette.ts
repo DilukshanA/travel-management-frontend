@@ -20,6 +20,9 @@ export const lightPalette: PaletteOptions = {
     primary: '#212121',
     secondary: '#424242',
   },
+  customBg: {
+    default: '#ffffff'
+  } as any
 };
 
 export const darkPalette: PaletteOptions = {
