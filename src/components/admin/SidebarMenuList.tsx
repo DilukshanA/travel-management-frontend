@@ -65,6 +65,11 @@ const SidebarMenuList: React.FC<CollapsibleMenuProps> = ({open}) => {
                 id: 'create-ride',
                 label: 'Create Ride',
                 onClick: () => router.push('/admin-dashboard/travel-ride/create-ride'),
+            },
+            {
+                id: 'ride-list',
+                label: 'Ride List',
+                onClick: () => router.push('/admin-dashboard/travel-ride/ride-list'),
             }
         ]
 
