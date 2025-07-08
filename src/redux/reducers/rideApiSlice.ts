@@ -15,10 +15,30 @@ export const rideApiSlice = createApi({
                 body: rideData,
             }),
             invalidatesTags: ['Ride']
+        }),
+        getAllRides: builder.query({
+            query: () => ({
+                url: '/api/get-all-rides',
+                method: 'GET',
+            }),
+            providesTags: ['Ride'],
+        }),
+        getRideById: builder.query({
+            query: (rideId) => ({
+                url: `/api/get-ride/${rideId}`,
+                method: 'GET',
+            }),
+            providesTags: (result, error, rideId) => result
+                ? [{ type: 'Ride', id: result.id }]
+                : [],
         })
     })
 })
 
 // Export hooks for usage in function components, which are
 // auto-generated based on the defined endpoints
-export const { useCreateRideMutation } = rideApiSlice;
+export const { 
+    useCreateRideMutation,
+    useGetAllRidesQuery,
+    useGetRideByIdQuery,
+} = rideApiSlice;
