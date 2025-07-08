@@ -1,11 +1,11 @@
 "use client"
-import { Box, TextField } from '@mui/material'
+import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material'
 import React from 'react'
 import BasicSelectField from '../ui/BasicSelectField'
 
 const AddVehicleForm = () => {
   return (
-    <Box sx={{ width: '100%', maxWidth: 600, margin: 'auto', padding: 2 }}>
+    <Box component='form' sx={{ width: '100%', maxWidth: 600, margin: 'auto', padding: 2 }}>
         <Box display='flex' gap={2}>
             <TextField
                 label="Vehicle Name"
@@ -27,17 +27,42 @@ const AddVehicleForm = () => {
                 variant="outlined"
                 fullWidth
             />
-            <BasicSelectField
-                name="vehicleStatus"
-                fieldName="Vehicle Status"
-                names={[
-                    { label: 'Active', value: 'active' },
-                    { label: 'Inactive', value: 'inactive' },
-                ]}
-                value="active"
-                onChange={(value) => console.log(value)}
+            <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Status</InputLabel>
+            <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Age"
+            >
+                <MenuItem>Active</MenuItem>
+                <MenuItem>Inactive</MenuItem>
+            </Select>
+            </FormControl>
+        </Box>
+        <Box display='flex' gap={2} mt={2}>
+            <TextField
+                label="Owner Name"
+                placeholder='Enter owner name'
+                variant="outlined"
+                fullWidth
+            />
+            <TextField
+                label="Total Seats"
+                type="number"
+                placeholder='Enter total seats'
+                variant="outlined"
+                fullWidth
             />
         </Box>
+        <Button
+            variant="contained"
+            size='large'
+            color="primary"
+            sx={{ mt: 2 }}
+            fullWidth
+            disableElevation
+        >Add Vehicle
+        </Button>
     </Box>
   )
 }
