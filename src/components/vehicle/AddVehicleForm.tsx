@@ -43,17 +43,13 @@ const AddVehicleForm = () => {
                 variant="outlined"
                 fullWidth
             />
-            <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Status</InputLabel>
-            <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label="Age"
-            >
-                <MenuItem>Active</MenuItem>
-                <MenuItem>Inactive</MenuItem>
-            </Select>
-            </FormControl>
+            <TextField
+                label="Total Seats"
+                type="number"
+                placeholder='Enter total seats'
+                variant="outlined"
+                fullWidth
+            />
         </Box>
         <Box display='flex' gap={2} mt={2}>
             <TextField
@@ -81,13 +77,18 @@ const AddVehicleForm = () => {
             />
         </Box>
         <Box display='flex' gap={2} mt={2}>
-            <TextField
-                label="Total Seats"
-                type="number"
-                placeholder='Enter total seats'
-                variant="outlined"
-                fullWidth
-            />
+            <FormControl fullWidth>
+            <InputLabel id="demo-simple-select-label">Status</InputLabel>
+            <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                label="Age"
+            >
+                <MenuItem>Available</MenuItem>
+                <MenuItem>Unavailable</MenuItem>
+                <MenuItem>Maintenance</MenuItem>
+            </Select>
+            </FormControl>
         </Box>
         <Button
             variant="contained"
