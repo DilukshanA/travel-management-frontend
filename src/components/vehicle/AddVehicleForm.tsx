@@ -2,6 +2,7 @@
 import { Box, Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField } from '@mui/material'
 import React from 'react'
 import ImageUploadField from '../ui/ImageUploadField'
+import Image from 'next/image'
 
 const AddVehicleForm = () => {
     const [ vehicleImage, setVehicleImage ] = React.useState<File | null>(null);
@@ -61,30 +62,29 @@ const AddVehicleForm = () => {
                 variant="outlined"
                 fullWidth
             />
-                    <TextField
-          label="With normal TextField"
-          id="outlined-start-adornment"
-          fullWidth
-          slotProps={{
-            input: {
-              startAdornment: <InputAdornment position="start">kg</InputAdornment>,
-            },
-          }}
-        />
-            {/* <TextField
+            <TextField
+                label="Owner Phone Number"
+                id="owner-phone"
+                fullWidth
+                slotProps={{
+                    input: {
+                    startAdornment: <InputAdornment position="start">
+                        <Image
+                        src="/assets/sri_lanka_flag.png"
+                        alt="Sri Lanka Flag"
+                        width={42}
+                        height={24}
+                        />
+                    </InputAdornment>,
+                    },
+                }}
+            />
+        </Box>
+        <Box display='flex' gap={2} mt={2}>
+            <TextField
                 label="Total Seats"
                 type="number"
                 placeholder='Enter total seats'
-                variant="outlined"
-                fullWidth
-            /> */}
-        </Box>
-        <Box display='flex' gap={2} mt={2}>
-            {/* phone number */}
-            <TextField
-                label="Owner Phone"
-                type="tel"
-                placeholder='Enter owner phone number'
                 variant="outlined"
                 fullWidth
             />
