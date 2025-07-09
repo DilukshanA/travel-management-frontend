@@ -1,5 +1,5 @@
 "use client"
-import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material'
+import { Box, Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField } from '@mui/material'
 import React from 'react'
 import ImageUploadField from '../ui/ImageUploadField'
 
@@ -61,13 +61,23 @@ const AddVehicleForm = () => {
                 variant="outlined"
                 fullWidth
             />
-            <TextField
+                    <TextField
+          label="With normal TextField"
+          id="outlined-start-adornment"
+          fullWidth
+          slotProps={{
+            input: {
+              startAdornment: <InputAdornment position="start">kg</InputAdornment>,
+            },
+          }}
+        />
+            {/* <TextField
                 label="Total Seats"
                 type="number"
                 placeholder='Enter total seats'
                 variant="outlined"
                 fullWidth
-            />
+            /> */}
         </Box>
         <Box display='flex' gap={2} mt={2}>
             {/* phone number */}
