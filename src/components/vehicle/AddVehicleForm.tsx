@@ -1,7 +1,6 @@
 "use client"
 import { Box, Button, FormControl, InputLabel, MenuItem, Select, TextField } from '@mui/material'
 import React from 'react'
-import BasicSelectField from '../ui/BasicSelectField'
 import ImageUploadField from '../ui/ImageUploadField'
 
 const AddVehicleForm = () => {
@@ -22,12 +21,19 @@ const AddVehicleForm = () => {
                 variant="outlined"
                 fullWidth
             />
-            <TextField
+            <FormControl fullWidth>
+            <InputLabel id="vehicle-type-label">Vehicle Type</InputLabel>
+            <Select
+                labelId="vehicle-type-label"
+                id="vehicle-type"
                 label="Vehicle Type"
-                placeholder='Enter vehicle type'
-                variant="outlined"
-                fullWidth
-            />
+            >
+                <MenuItem>Bus</MenuItem>
+                <MenuItem>Van</MenuItem>
+                <MenuItem>Car</MenuItem>
+                <MenuItem>Truck</MenuItem>
+            </Select>
+            </FormControl>
         </Box>
         <Box display='flex' gap={2} mt={2}>
             <TextField
@@ -59,6 +65,16 @@ const AddVehicleForm = () => {
                 label="Total Seats"
                 type="number"
                 placeholder='Enter total seats'
+                variant="outlined"
+                fullWidth
+            />
+        </Box>
+        <Box display='flex' gap={2} mt={2}>
+            {/* phone number */}
+            <TextField
+                label="Owner Phone"
+                type="tel"
+                placeholder='Enter owner phone number'
                 variant="outlined"
                 fullWidth
             />

@@ -1,35 +1,55 @@
-import { FormControl, InputLabel, MenuItem, Select } from '@mui/material'
-import React from 'react'
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-type SelectFieldProps = {
-    id?: string;
-    value?: number | string;
-    label?: string;
-    onChange?: (event: React.ChangeEvent<{ value: unknown }>) => void;
-    options?: string[];
+export interface SelectOption {
+  value: string | number;
+  label: string;
 }
 
-const SelectField = (
-    { 
-        id, value, label, onChange, options 
-    } : SelectFieldProps
-) => {
+interface SelectFieldProps {
+  label: string;
+  value: string | number;
+  onChange: (event: SelectChangeEvent) => void;
+  options: SelectOption[];
+  fullWidth?: boolean;
+  minWidth?: number | string;
+}
+
+const SelectField: React.FC<SelectFieldProps> = ({
+  label,
+  value,
+  onChange,
+  options,
+  fullWidth = true,
+  minWidth = 120,
+}) => {
+  const labelId = `${label}-label`;
+  const selectId = `${label}-select`;
+
   return (
-    <FormControl fullWidth>
-    <InputLabel id="demo-simple-select-label">Age</InputLabel>
-    <Select
-        labelId="demo-simple-select-label"
-        id="demo-simple-select"
-        value={value}
-        label="Age"
-        onChange={onChange}
-    >
-        <MenuItem value={10}>Ten</MenuItem>
-        <MenuItem value={20}>Twenty</MenuItem>
-        <MenuItem value={30}>Thirty</MenuItem>
-    </Select>
-    </FormControl>
-  )
-}
+    <Box sx={{ minWidth }}>
+      <FormControl fullWidth={fullWidth}>
+        <InputLabel id={labelId}>{label}</InputLabel>
+        <Select
+          labelId={labelId}
+          id={selectId}
+          value={value}
+          label={label}
+          onChange={(event) => onChange(event)}
+        >
+          {options.map((option) => (
+            <MenuItem key={option.value} value={option.value.toString()}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </Box>
+  );
+};
 
-export default SelectField
+export default SelectField;
