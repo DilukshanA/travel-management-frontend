@@ -46,11 +46,17 @@ const AddVehicleForm = () => {
                 labelId="vehicle-type-label"
                 id="vehicle-type"
                 label="Vehicle Type"
+                name='vehicleType'
+                value={formik.values.vehicleType}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.vehicleType && Boolean(formik.errors.vehicleType)}
+                //helperText={formik.touched.vehicleType && formik.errors.vehicleType}
             >
-                <MenuItem>Bus</MenuItem>
-                <MenuItem>Van</MenuItem>
-                <MenuItem>Car</MenuItem>
-                <MenuItem>Truck</MenuItem>
+                <MenuItem value="Bus">Bus</MenuItem>
+                <MenuItem value="Van">Van</MenuItem>
+                <MenuItem value="Car">Car</MenuItem>
+                <MenuItem value="Truck">Truck</MenuItem>
             </Select>
             </FormControl>
         </Box>
@@ -60,6 +66,12 @@ const AddVehicleForm = () => {
                 placeholder='Enter vehicle number'
                 variant="outlined"
                 fullWidth
+                name='vehicleNumber'
+                value={formik.values.vehicleNumber}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.vehicleNumber && Boolean(formik.errors.vehicleNumber)}
+                helperText={formik.touched.vehicleNumber && formik.errors.vehicleNumber}
             />
             <TextField
                 label="Total Seats"
@@ -67,6 +79,12 @@ const AddVehicleForm = () => {
                 placeholder='Enter total seats'
                 variant="outlined"
                 fullWidth
+                name='totalSeats'
+                value={formik.values.totalSeats}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.totalSeats && Boolean(formik.errors.totalSeats)}
+                helperText={formik.touched.totalSeats && formik.errors.totalSeats}
             />
         </Box>
         <Box display='flex' gap={2} mt={2}>
@@ -75,11 +93,19 @@ const AddVehicleForm = () => {
                 placeholder='Enter owner name'
                 variant="outlined"
                 fullWidth
+                name='ownerName'
+                value={formik.values.ownerName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.ownerName && Boolean(formik.errors.ownerName)}
+                helperText={formik.touched.ownerName && formik.errors.ownerName}
             />
             <TextField
                 label="Owner Phone Number"
                 id="owner-phone"
                 fullWidth
+                placeholder='Enter owner phone number'
+                name='ownerPhone'
                 slotProps={{
                     input: {
                     startAdornment: <InputAdornment position="start">
@@ -92,6 +118,11 @@ const AddVehicleForm = () => {
                     </InputAdornment>,
                     },
                 }}
+                value={formik.values.ownerPhone}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.ownerPhone && Boolean(formik.errors.ownerPhone)}
+                helperText={formik.touched.ownerPhone && formik.errors.ownerPhone}
             />
         </Box>
         <Box display='flex' gap={2} mt={2}>
@@ -101,10 +132,15 @@ const AddVehicleForm = () => {
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 label="Age"
+                name='status'
+                value={formik.values.status}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.status && Boolean(formik.errors.status)}
             >
-                <MenuItem>Available</MenuItem>
-                <MenuItem>Unavailable</MenuItem>
-                <MenuItem>Maintenance</MenuItem>
+                <MenuItem value="Availabl">Available</MenuItem>
+                <MenuItem value="Unavailable">Unavailable</MenuItem>
+                <MenuItem value="Maintenance">Maintenance</MenuItem>
             </Select>
             </FormControl>
         </Box>
