@@ -1,8 +1,8 @@
 import { VehicleTypes } from "./types";
 
 export const addVehicleInitialValues : VehicleTypes = {
-    name: '',
-    type: '',
+    vehicleName: '',
+    vehicleType: '',
     vehicleNumber: '',
     status: '',
     ownerName: '',

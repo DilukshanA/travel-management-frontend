@@ -1,6 +1,6 @@
 export type VehicleTypes = {
-    name: string;
-    type: string;
+    vehicleName: string;
+    vehicleType: string;
     vehicleNumber: string;
     status: string;
     ownerName: string;
