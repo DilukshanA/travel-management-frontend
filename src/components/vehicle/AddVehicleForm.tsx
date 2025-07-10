@@ -13,11 +13,13 @@ const AddVehicleForm = () => {
     const formik = useFormik({
         initialValues: addVehicleInitialValues,
         validationSchema: vehicleValidationSchema,
-        onSubmit: (values) => {}
+        onSubmit: (values) => {
+            console.log("values : " , values);
+        }
     })
 
   return (
-    <Box component='form' sx={{ width: '100%', maxWidth: 600, margin: 'auto', padding: 2 }}>
+    <Box component='form' onSubmit={formik.handleSubmit} sx={{ width: '100%', maxWidth: 600, margin: 'auto', padding: 2 }}>
         <Box sx={{ mb:2}}>
             <ImageUploadField
                 id='vehicle-logo'
@@ -31,6 +33,12 @@ const AddVehicleForm = () => {
                 placeholder='Enter vehicle name'
                 variant="outlined"
                 fullWidth
+                name='vehicleName'
+                value={formik.values.vehicleName}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={formik.touched.vehicleName && Boolean(formik.errors.vehicleName)}
+                helperText={formik.touched.vehicleName && formik.errors.vehicleName}
             />
             <FormControl fullWidth>
             <InputLabel id="vehicle-type-label">Vehicle Type</InputLabel>
@@ -101,6 +109,7 @@ const AddVehicleForm = () => {
             </FormControl>
         </Box>
         <Button
+            type="submit"
             variant="contained"
             size='large'
             color="primary"

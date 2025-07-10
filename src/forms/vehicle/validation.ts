@@ -1,8 +1,8 @@
 import * as Yup from "yup";
 
 export const vehicleValidationSchema = Yup.object().shape({
-    name: Yup.string().required('Vehicle name is required'),
-    type: Yup.string().required('Vehicle type is required'),
+    vehicleName: Yup.string().required('Vehicle name is required'),
+    vehicleType: Yup.string().required('Vehicle type is required'),
     vehicleNumber: Yup.string().required('Vehicle number is required'),
     status: Yup.string().required('Vehicle status is required'),
     ownerName: Yup.string().required('Owner name is required'),
