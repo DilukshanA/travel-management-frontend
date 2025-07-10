@@ -9,5 +9,5 @@ export const vehicleValidationSchema = Yup.object().shape({
     ownerPhone: Yup.string()
         .required('Owner phone number is required')
         .matches(/^\d{10}$/, 'Owner phone number must be 10 digits'),
-    totalSeats: Yup.number().required('Number of seats is required'),
+    totalSeats: Yup.number().required('Number of seats is required').positive().integer(),
 })
