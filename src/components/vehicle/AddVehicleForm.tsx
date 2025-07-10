@@ -3,12 +3,21 @@ import { Box, Button, FormControl, InputAdornment, InputLabel, MenuItem, Select,
 import React from 'react'
 import ImageUploadField from '../ui/ImageUploadField'
 import Image from 'next/image'
+import { useFormik } from 'formik'
+import { addVehicleInitialValues } from '@/forms/vehicle/initialValues'
 
 const AddVehicleForm = () => {
     const [ vehicleImage, setVehicleImage ] = React.useState<File | null>(null);
+
+    const formik = useFormik({
+        initialValues: addVehicleInitialValues,
+        validationSchema: {},
+        onSubmit: (values) => {}
+    })
+
   return (
     <Box component='form' sx={{ width: '100%', maxWidth: 600, margin: 'auto', padding: 2 }}>
-        <Box>
+        <Box sx={{ mb:2}}>
             <ImageUploadField
                 id='vehicle-logo'
                 value={vehicleImage}
