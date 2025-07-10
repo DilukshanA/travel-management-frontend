@@ -5,13 +5,14 @@ import ImageUploadField from '../ui/ImageUploadField'
 import Image from 'next/image'
 import { useFormik } from 'formik'
 import { addVehicleInitialValues } from '@/forms/vehicle/initialValues'
+import { vehicleValidationSchema } from '@/forms/vehicle/validation'
 
 const AddVehicleForm = () => {
     const [ vehicleImage, setVehicleImage ] = React.useState<File | null>(null);
 
     const formik = useFormik({
         initialValues: addVehicleInitialValues,
-        validationSchema: {},
+        validationSchema: vehicleValidationSchema,
         onSubmit: (values) => {}
     })
 
