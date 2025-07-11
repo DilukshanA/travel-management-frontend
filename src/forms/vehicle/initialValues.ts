@@ -8,5 +8,5 @@ export const addVehicleInitialValues : VehicleTypes = {
     ownerName: '',
     ownerPhone: '',
     totalSeats: 0,
-    photo: null as File | null
+    vehiclePhoto: '',
 }
