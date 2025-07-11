@@ -3,6 +3,7 @@ import { authApiSlice } from "./reducers/authApiSlice";
 import { otpApiSlice } from "./reducers/otpApiSlice";
 import { userSlice } from "./reducers/userSlice";
 import { rideApiSlice } from "./reducers/rideApiSlice";
+import { vehicelApiSlice } from "./reducers/vehicleApiSlice";
 
 const store = configureStore({
     reducer: {
@@ -10,13 +11,15 @@ const store = configureStore({
         [authApiSlice.reducerPath] : authApiSlice.reducer,
         [otpApiSlice.reducerPath] : otpApiSlice.reducer,
         [rideApiSlice.reducerPath] : rideApiSlice.reducer,
+        [vehicelApiSlice.reducerPath] : vehicelApiSlice.reducer
     },
     // Adding the api middleware enables caching, invalidation, polling and other features of RTK Query
     middleware: (getDefaultMiddleware) => {
         return getDefaultMiddleware().concat(
             authApiSlice.middleware,
             otpApiSlice.middleware,
-            rideApiSlice.middleware
+            rideApiSlice.middleware,
+            vehicelApiSlice.middleware
         );
     }
 })

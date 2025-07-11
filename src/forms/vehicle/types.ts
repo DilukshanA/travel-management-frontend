@@ -6,5 +6,5 @@ export type VehicleTypes = {
     ownerName: string;
     ownerPhone: string;
     totalSeats: number;
-    photo: File | null;
+    vehiclePhoto: string;
 }
