@@ -50,10 +50,7 @@ const AddVehicleForm = () => {
                 status: formik.values.status,
                 vehiclePhoto: uploadedImageUrl // Use the uploaded image URL
             }).unwrap();
-
             toast.success(result.message || 'Vehicle added successfully!');
-
-            console.log("Vehicle data uploaded successfully:", result);
             
         } catch (err : any) {
             console.log("Error uploading vehicle data:", err);
