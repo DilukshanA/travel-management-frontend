@@ -15,6 +15,7 @@ const AddVehicleForm = () => {
     const CLOUDINARY_UPLOAD_VEHICLE_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_VEHICLE_PRESET;
     const CLOUDINARY_CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDNAME;
 
+    const [imageUploading, setImageUploading] = useState(false);
     const [addVehicle, { isLoading, isSuccess, isError, error }] = useAddVehicleMutation();
     
     const onSubmit = async () => {
@@ -22,6 +23,7 @@ const AddVehicleForm = () => {
             let uploadedImageUrl = "";
 
             if (vehicleImage) {
+                setImageUploading(true);
                 const formData = new FormData();
                 formData.append('file', vehicleImage);
                 formData.append('upload_preset', CLOUDINARY_UPLOAD_VEHICLE_PRESET ?? "autonix_vehicle_preset");
@@ -53,8 +55,15 @@ const AddVehicleForm = () => {
 
             console.log("Vehicle data uploaded successfully:", result);
             
-        } catch (error) {
-            console.log("Error uploading vehicle data:", error);
+        } catch (err : any) {
+            console.log("Error uploading vehicle data:", err);
+            if (err?.originalStatus === 404){
+                toast.error('Server problem occurred !');
+            } else {
+                toast.error('Failed to add vehicle!')
+            }
+        } finally {
+            setImageUploading(false);
         }
     }
 
@@ -65,7 +74,7 @@ const AddVehicleForm = () => {
     })
   return (
     <Box component='form' onSubmit={formik.handleSubmit} sx={{ width: '100%', maxWidth: 600, margin: 'auto', padding: 2 }}>
-        <LoadingBackdrop open={isLoading}/>
+        <LoadingBackdrop open={isLoading || imageUploading}/>
         <Box sx={{ mb:2}}>
             <ImageUploadField
                 id='vehicle-logo'
