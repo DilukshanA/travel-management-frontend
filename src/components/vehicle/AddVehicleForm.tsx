@@ -6,11 +6,16 @@ import Image from 'next/image'
 import { useFormik } from 'formik'
 import { addVehicleInitialValues } from '@/forms/vehicle/initialValues'
 import { vehicleValidationSchema } from '@/forms/vehicle/validation'
+import { useAddVehicleMutation } from '@/redux/reducers/vehicleApiSlice'
+import LoadingBackdrop from '../ui/LoadingBackdrop'
+import toast from 'react-hot-toast'
 
 const AddVehicleForm = () => {
     const [ vehicleImage, setVehicleImage ] = useState<File | null>(null);
     const CLOUDINARY_UPLOAD_VEHICLE_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_VEHICLE_PRESET;
     const CLOUDINARY_CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDNAME;
+
+    const [addVehicle, { isLoading, isSuccess, isError, error }] = useAddVehicleMutation();
     
     const onSubmit = async () => {
         try {
@@ -32,6 +37,21 @@ const AddVehicleForm = () => {
                 const cloudinaryData = await cloudinaryRes.json();
                 uploadedImageUrl = cloudinaryData.secure_url; // Get the secure URL of the uploaded image
             }
+
+            const result = await addVehicle({
+                vehicleName: formik.values.vehicleName,
+                vehicleType: formik.values.vehicleType,
+                vehicleNumber: formik.values.vehicleNumber,
+                totalSeats: formik.values.totalSeats,
+                ownerName: formik.values.ownerName,
+                ownerPhone: formik.values.ownerPhone,
+                status: formik.values.status,
+                vehiclePhoto: uploadedImageUrl // Use the uploaded image URL
+            }).unwrap();
+
+            toast.success(result.message || 'Vehicle added successfully!');
+
+            console.log("Vehicle data uploaded successfully:", result);
             
         } catch (error) {
             console.log("Error uploading vehicle data:", error);
@@ -45,6 +65,7 @@ const AddVehicleForm = () => {
     })
   return (
     <Box component='form' onSubmit={formik.handleSubmit} sx={{ width: '100%', maxWidth: 600, margin: 'auto', padding: 2 }}>
+        <LoadingBackdrop open={isLoading}/>
         <Box sx={{ mb:2}}>
             <ImageUploadField
                 id='vehicle-logo'
@@ -163,7 +184,7 @@ const AddVehicleForm = () => {
                 onBlur={formik.handleBlur}
                 error={formik.touched.status && Boolean(formik.errors.status)}
             >
-                <MenuItem value="Availabl">Available</MenuItem>
+                <MenuItem value="Available">Available</MenuItem>
                 <MenuItem value="Unavailable">Unavailable</MenuItem>
                 <MenuItem value="Maintenance">Maintenance</MenuItem>
             </Select>
