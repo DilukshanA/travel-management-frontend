@@ -1,6 +1,6 @@
 "use client"
 import { Box, Button, FormControl, InputAdornment, InputLabel, MenuItem, Select, TextField } from '@mui/material'
-import React from 'react'
+import React, { useState } from 'react'
 import ImageUploadField from '../ui/ImageUploadField'
 import Image from 'next/image'
 import { useFormik } from 'formik'
@@ -8,16 +8,41 @@ import { addVehicleInitialValues } from '@/forms/vehicle/initialValues'
 import { vehicleValidationSchema } from '@/forms/vehicle/validation'
 
 const AddVehicleForm = () => {
-    const [ vehicleImage, setVehicleImage ] = React.useState<File | null>(null);
+    const [ vehicleImage, setVehicleImage ] = useState<File | null>(null);
+    const CLOUDINARY_UPLOAD_VEHICLE_PRESET = process.env.NEXT_PUBLIC_CLOUDINARY_VEHICLE_PRESET;
+    const CLOUDINARY_CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDNAME;
+    
+    const onSubmit = async () => {
+        try {
+            let uploadedImageUrl = "";
+
+            if (vehicleImage) {
+                const formData = new FormData();
+                formData.append('file', vehicleImage);
+                formData.append('upload_preset', CLOUDINARY_UPLOAD_VEHICLE_PRESET ?? "autonix_vehicle_preset");
+                formData.append('public_id', `${formik.values.vehicleName}_${formik.values.vehicleType}_${Date.now()}`); // Optional: Set a public ID for the image}`)
+
+                const cloudinaryRes = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+                    method: 'POST',
+                    body: formData
+                })
+                if (!cloudinaryRes.ok) {
+                    throw new Error('Failed to upload image to Cloudinary');
+                }
+                const cloudinaryData = await cloudinaryRes.json();
+                uploadedImageUrl = cloudinaryData.secure_url; // Get the secure URL of the uploaded image
+            }
+            
+        } catch (error) {
+            console.log("Error uploading vehicle data:", error);
+        }
+    }
 
     const formik = useFormik({
         initialValues: addVehicleInitialValues,
         validationSchema: vehicleValidationSchema,
-        onSubmit: (values) => {
-            console.log("values : " , values);
-        }
+        onSubmit: onSubmit,
     })
-
   return (
     <Box component='form' onSubmit={formik.handleSubmit} sx={{ width: '100%', maxWidth: 600, margin: 'auto', padding: 2 }}>
         <Box sx={{ mb:2}}>
