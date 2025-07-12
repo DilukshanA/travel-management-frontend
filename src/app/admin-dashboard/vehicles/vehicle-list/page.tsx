@@ -1,87 +1,73 @@
 "use client" 
 import StickyTable, { Column } from '@/components/ui/StickyTable'
+import { VehicleTypes } from '@/types/vehicle';
 import Image from 'next/image';
 import React from 'react'
 
-interface CountryData {
-  name: string;
-  test: string;
-  code: string;
-  population: number;
-  size: number;
-  density: number;
+const createVehicleData = (
+  {
+    vehicleName,
+    vehicleType,
+    vehicleNumber,
+    ownerName,
+    ownerPhone,
+    vehiclePhoto,
+    status,
+    totalSeats
+  } : VehicleTypes
+) => {
+  return { vehicleName, vehicleType, vehicleNumber,
+    ownerName, ownerPhone, vehiclePhoto, status, totalSeats }
 }
 
-function createData(
-  name: string,
-  test: string,
-  code: string,
-  population: number,
-  size: number
-): CountryData {
-  const density = population / size;
-  return { name,test, code, population, size, density };
-}
+const vehicleRows: VehicleTypes[] = [
+  createVehicleData({
+    vehicleName: 'Bus',
+    vehicleType: 'Public Transport',
+    vehicleNumber: 'AB123CD',
+    ownerName: 'John Doe',
+    ownerPhone: '1234567890',
+    vehiclePhoto: 'https://res.cloudinary.com/dbcawcvu6/image/upload/v1752247112/vehuname_Bus_1752247110437.jpg',
+    status: 'Active',
+    totalSeats: 50
+  }),
+  // ... more vehicle rows
+]
 
-const rows: CountryData[] = [
-  createData('India','https://res.cloudinary.com/dbcawcvu6/image/upload/v1752247112/vehuname_Bus_1752247110437.jpg', 'IN', 1324171354, 3287263),
-  createData('China','test2', 'CN', 1403500365, 9596961),
-  createData('Italy','test3', 'IT', 60483973, 301340),
-  // ... more rows
-];
-
-const columns: readonly Column<CountryData>[] = [
-  { id: 'name', label: 'Name', minWidth: 170 },
-{
-  id: 'test',
-  label: 'Flag',
-  minWidth: 100,
-  align: 'center',
-  renderCell: (value) => {
-    if (typeof value === 'string' && value.startsWith('http')) {
-      return (
-        <Image
-          src={value}
-          alt="flag"
-          width={60}
-          height={25}
-          style={{ objectFit: 'cover', borderRadius: 4 }}
-        />
-      );
-    }
-    return <span style={{ color: 'gray' }}>No Image</span>;
-  },
-}
-,
-  { id: 'code', label: 'ISO Code', minWidth: 100 },
-  
+const vehicleColumns: readonly Column<VehicleTypes>[] = [
   {
-    id: 'population',
-    label: 'Population',
-    minWidth: 170,
-    align: 'right',
-    format: (value) => value.toLocaleString('en-US'),
+    id: 'vehiclePhoto',
+    label: 'Vehicle Photo',
+    minWidth: 100,
+    align: 'center',
+    renderCell: (value) => {
+      if (typeof value === 'string' && value.startsWith('http')) {
+        return (
+          <Image
+            src={value}
+            alt="vehicle"
+            width={60}
+            height={25}
+            style={{ objectFit: 'cover', borderRadius: 4 }}
+          />
+        );
+      }
+      return <span style={{ color: 'gray' }}>No Image</span>;
+    },
   },
-  {
-    id: 'size',
-    label: 'Size (km²)',
-    minWidth: 170,
-    align: 'right',
-    format: (value) => value.toLocaleString('en-US'),
-  },
-  {
-    id: 'density',
-    label: 'Density',
-    minWidth: 170,
-    align: 'right',
-    format: (value) => value.toFixed(2),
-  },
-];
+  { id: 'vehicleName', label: 'Vehicle Name', minWidth: 120 },
+  { id: 'vehicleType', label: 'Vehicle Type', minWidth: 100 },
+  { id: 'vehicleNumber', label: 'Vehicle Number', minWidth: 100 },
+  { id: 'totalSeats', label: 'Total Seats', minWidth: 100, },
+  { id: 'ownerName', label: 'Owner Name', minWidth: 100 },
+  { id: 'ownerPhone', label: 'Owner Phone', minWidth: 100 },
+  { id: 'status', label: 'Status', minWidth: 100 },
+]
 
 const page = () => {
   return (
     <div>
-      <StickyTable columns={columns} rows={rows} />
+      <StickyTable columns={vehicleColumns} rows={vehicleRows} />
     </div>
   )
 }
