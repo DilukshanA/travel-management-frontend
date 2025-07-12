@@ -18,17 +18,17 @@ export interface Column<T> {
   renderCell?: (value: any, row: T) => React.ReactNode;
 }
 
-interface ReusableStickyTableProps<T extends { [key: string]: any }> {
+interface StickyTableProps<T extends { [key: string]: any }> {
   columns: readonly Column<T>[];
   rows: T[];
   rowsPerPageOptions?: number[];
 }
 
-export default function ReusableStickyTable<T extends { [key: string]: any }>({
+export default function StickyTable<T extends { [key: string]: any }>({
   columns,
   rows,
   rowsPerPageOptions = [10, 25, 100],
-}: ReusableStickyTableProps<T>) {
+}: StickyTableProps<T>) {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(rowsPerPageOptions[0]);
 
