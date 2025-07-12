@@ -43,7 +43,7 @@ export default function StickyTable<T extends { [key: string]: any }>({
 
   return (
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer sx={{ maxHeight: 440 }}>
+      <TableContainer sx={{ maxHeight: 440, overflow: 'auto' }}>
         <Table stickyHeader>
           <TableHead>
             <TableRow>

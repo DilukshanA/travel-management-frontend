@@ -18,7 +18,7 @@ const AdminLayout = ({ children }: { children: React.ReactNode }) => {
       <CssBaseline />
       <AppBar open={open} onDrawerOpen={handleDrawerOpen} drawerWidth={drawerWidth} />
       <Sidebar open={open} onDrawerClose={handleDrawerClose} />
-      <Box component="main" sx={{ flexGrow: 1, p: 3, backgroundColor: theme.palette.background.default, height:'100vh' }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, backgroundColor: theme.palette.background.default, height:'100vh', overflow: 'hidden' }}>
         <DrawerHeader />
         {children}
       </Box>
