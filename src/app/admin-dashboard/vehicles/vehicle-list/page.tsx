@@ -3,6 +3,7 @@ import LoadingBackdrop from '@/components/ui/LoadingBackdrop';
 import StickyTable, { Column } from '@/components/ui/StickyTable'
 import { useGetAllVehiclesQuery } from '@/redux/reducers/vehicleApiSlice';
 import { VehicleTypes } from '@/types/vehicle';
+import { Box } from '@mui/material';
 import Image from 'next/image';
 import React from 'react'
 
@@ -61,10 +62,10 @@ const vehicleRows = vehicleData?.vehicles.map(
 ) || [];
 
   return (
-    <div>
+    <Box sx={{ width: '100%' ,overflow: 'hidden' }}>
       <LoadingBackdrop open={isLoading} />
       <StickyTable columns={vehicleColumns} rows={vehicleRows} />
-    </div>
+    </Box>
   )
 }
 
