@@ -1,4 +1,4 @@
-"use client" 
+"use client";
 import * as React from 'react';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
@@ -15,6 +15,7 @@ export interface Column<T> {
   minWidth?: number;
   align?: 'right' | 'left' | 'center';
   format?: (value: any) => string;
+  renderCell?: (value: any, row: T) => React.ReactNode;
 }
 
 interface ReusableStickyTableProps<T extends { [key: string]: any }> {
@@ -66,7 +67,11 @@ export default function ReusableStickyTable<T extends { [key: string]: any }>({
                     const value = row[column.id];
                     return (
                       <TableCell key={String(column.id)} align={column.align}>
-                        {column.format ? column.format(value) : value}
+                        {column.renderCell
+                          ? column.renderCell(value, row)
+                          : column.format
+                          ? column.format(value)
+                          : value}
                       </TableCell>
                     );
                   })}
