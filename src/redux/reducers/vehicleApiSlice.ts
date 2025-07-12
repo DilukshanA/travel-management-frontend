@@ -15,10 +15,20 @@ export const vehicelApiSlice = createApi({
                 body: vehicleData,
             }),
             invalidatesTags: ['Vehicle']
+        }),
+        getAllVehicles: builder.query({
+            query: () => ({
+                url: '/api/all-vehicles',
+                method: 'GET',
+            }),
+            providesTags: ['Vehicle'],
         })
     })
 })
 
 // Export hooks for usage in function components, which are
 // auto-generated based on the defined endpoints
-export const { useAddVehicleMutation } = vehicelApiSlice;
+export const { 
+    useAddVehicleMutation,
+    useGetAllVehiclesQuery
+ } = vehicelApiSlice;

@@ -1,5 +1,5 @@
 "use client" 
-import ReusableStickyTable, { Column } from '@/components/ui/Table'
+import StickyTable, { Column } from '@/components/ui/StickyTable'
 import Image from 'next/image';
 import React from 'react'
 
@@ -81,7 +81,7 @@ const columns: readonly Column<CountryData>[] = [
 const page = () => {
   return (
     <div>
-      <ReusableStickyTable columns={columns} rows={rows} />
+      <StickyTable columns={columns} rows={rows} />
     </div>
   )
 }
