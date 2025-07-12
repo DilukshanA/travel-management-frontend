@@ -1,3 +1,4 @@
+import { getAllVehiclesRes } from "@/types/apiResTypes";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const vehicelApiSlice = createApi({
@@ -16,7 +17,7 @@ export const vehicelApiSlice = createApi({
             }),
             invalidatesTags: ['Vehicle']
         }),
-        getAllVehicles: builder.query({
+        getAllVehicles: builder.query<getAllVehiclesRes, void>({
             query: () => ({
                 url: '/api/all-vehicles',
                 method: 'GET',

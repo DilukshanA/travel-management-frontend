@@ -1,5 +1,7 @@
 "use client" 
+import LoadingBackdrop from '@/components/ui/LoadingBackdrop';
 import StickyTable, { Column } from '@/components/ui/StickyTable'
+import { useGetAllVehiclesQuery } from '@/redux/reducers/vehicleApiSlice';
 import { VehicleTypes } from '@/types/vehicle';
 import Image from 'next/image';
 import React from 'react'
@@ -19,20 +21,6 @@ const createVehicleData = (
   return { vehicleName, vehicleType, vehicleNumber,
     ownerName, ownerPhone, vehiclePhoto, status, totalSeats }
 }
-
-const vehicleRows: VehicleTypes[] = [
-  createVehicleData({
-    vehicleName: 'Bus',
-    vehicleType: 'Public Transport',
-    vehicleNumber: 'AB123CD',
-    ownerName: 'John Doe',
-    ownerPhone: '1234567890',
-    vehiclePhoto: 'https://res.cloudinary.com/dbcawcvu6/image/upload/v1752247112/vehuname_Bus_1752247110437.jpg',
-    status: 'Active',
-    totalSeats: 50
-  }),
-  // ... more vehicle rows
-]
 
 const vehicleColumns: readonly Column<VehicleTypes>[] = [
   {
@@ -65,8 +53,16 @@ const vehicleColumns: readonly Column<VehicleTypes>[] = [
 ]
 
 const page = () => {
+
+  const { data: vehicleData, isLoading } = useGetAllVehiclesQuery();
+
+const vehicleRows = vehicleData?.vehicles.map(
+  vehicles =>  createVehicleData(vehicles)
+) || [];
+
   return (
     <div>
+      <LoadingBackdrop open={isLoading} />
       <StickyTable columns={vehicleColumns} rows={vehicleRows} />
     </div>
   )
