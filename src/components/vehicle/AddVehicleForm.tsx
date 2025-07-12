@@ -56,7 +56,10 @@ const AddVehicleForm = () => {
             console.log("Error uploading vehicle data:", err);
             if (err?.originalStatus === 404){
                 toast.error('Server problem occurred !');
-            } else {
+            } else if (err?.status === 409) {
+                toast.error(err.data.message || 'Vehicle already exists!');
+            }
+            else {
                 toast.error('Failed to add vehicle!')
             }
         } finally {
