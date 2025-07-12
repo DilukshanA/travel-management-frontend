@@ -50,7 +50,21 @@ const vehicleColumns: readonly Column<VehicleTypes>[] = [
   { id: 'totalSeats', label: 'Total Seats', minWidth: 100, },
   { id: 'ownerName', label: 'Owner Name', minWidth: 100 },
   { id: 'ownerPhone', label: 'Owner Phone', minWidth: 100 },
-  { id: 'status', label: 'Status', minWidth: 100 },
+  { 
+    id: 'status',
+    label: 'Status',
+    minWidth: 100 ,
+    align: 'center',
+    renderCell: (value : any) => {
+      if (value === 'Available') {
+        return (
+          <Box sx={{ bgcolor: '#b2dfdb', color: '#2e7d32', borderRadius: 2, fontWeight: 'bold' }}>
+            {value}
+          </Box>
+        );
+      }
+    }
+  },
 ]
 
 const page = () => {
